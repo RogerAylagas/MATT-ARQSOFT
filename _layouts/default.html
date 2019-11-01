@@ -21,23 +21,23 @@
           <img src="{{site.profile_img | relative_url}}" alt="Profile Image" width="200"/>
         {% endif %}
         {% if site.location %}
-          <li>
+          <br>
             <img src="{{site.location_icon | relative_url}}" alt="Location" width=12/>
-            <a src = "{{site.location | relative_url}}">  </a> 
-          </li>
+            <a> Barcelona, Spain </a> 
+          </br>
         {% endif %}
         {% if site.linkedin %}
-        <li>
+        <br>
           <img href = "{{site.linkedin_link | relative_url}}" src="{{site.linkedin_icon | relative_url}}" alt="LinkedIn" width=12/>
           <a href = "{{site.linkedin_link | relative_url}}"> Roger Aylagas </a> 
-        </li>
+        </br>
           
         {% endif %}
         {% if site.email %}
-        <li>
+        <br>
           <img href = "{{site.email | relative_url}}" src="{{site.email_icon | relative_url}}" alt="e-mail" width=12/>
           <a href = "{{site.email | relative_url}}"> rogeraylagas97@gmail.com </a> 
-        </li>
+        </br>
           
         {% endif %}
 
