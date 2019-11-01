@@ -27,10 +27,18 @@
           </p>
         {% endif %}
         {% if site.linkedin %}
-          <img src="{{site.linkedin_icon | relative_url}}" alt="LinkedIn"/>
+        <p>
+          <img href = "{{site.linkedin_link | relative_url}}" src="{{site.linkedin_icon | relative_url}}" alt="LinkedIn"/>
+          <a href = "{{site.linkedin_link | relative_url}}"> Roger Aylagas </a> 
+        </p>
+          
         {% endif %}
         {% if site.email %}
-          <img src="{{site.email_icon | relative_url}}" alt="e-mail"/>
+        <p>
+          <img href = "{{site.email | relative_url}}" src="{{site.email_icon | relative_url}}" alt="e-mail"/>
+          <a href = "{{site.email | relative_url}}"> rogeraylagas97@gmail.com </a> 
+        </p>
+          
         {% endif %}
 
         {% if site.show_downloads %}
