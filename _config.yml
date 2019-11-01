@@ -12,6 +12,9 @@ linkedin_link: https://www.linkedin.com/in/roger-aylagas-torres/
 email_icon: /assets/icon/email_icon.png
 email: rogeraylagas97@gmail.com
 
+cv_icon: /assets/docs/cv.pdf
+cv: /assets/icon/cv_icon.png
+
 show_downloads: false
 google_analytics: false
 theme: jekyll-theme-minimal

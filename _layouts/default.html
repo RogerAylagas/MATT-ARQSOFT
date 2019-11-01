@@ -22,21 +22,28 @@
         {% endif %}
         {% if site.location %}
           <br>
-            <img src="{{site.location_icon | relative_url}}" alt="Location" width=12/>
+            <img alt="Location" width=12/>
             <a> Barcelona, Spain </a> 
           </br>
         {% endif %}
         {% if site.linkedin %}
         <br>
-          <img href = "{{site.linkedin_link | relative_url}}" src="{{site.linkedin_icon | relative_url}}" alt="LinkedIn" width=12/>
+          <img href = "{{site.linkedin_link | relative_url}}" src="{{site.linkedin_icon | relative_url}}" style="color: #000000" alt="LinkedIn" width=12/>
           <a href = "{{site.linkedin_link | relative_url}}"> Roger Aylagas </a> 
         </br>
           
         {% endif %}
         {% if site.email %}
         <br>
-          <img href = "{{site.email | relative_url}}" src="{{site.email_icon | relative_url}}" alt="e-mail" width=12/>
+          <img href = "{{site.email | relative_url}}" src="{{site.email_icon | relative_url}}" style="color: #000000" alt="e-mail" width=12/>
           <a href = "{{site.email | relative_url}}"> rogeraylagas97@gmail.com </a> 
+        </br>
+          
+        {% endif %}
+        {% if site.cv %}
+        <br>
+          <img href = "{{site.cv | relative_url}}" src="{{site.cv_icon | relative_url}}" style="color: #000000" alt="e-mail" width=12/>
+          <a href = "{{site.cv | relative_url}}"> Personal CV </a> 
         </br>
           
         {% endif %}
