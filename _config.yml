@@ -2,5 +2,5 @@ title: Roger Aylagas
 profile_img: /assets/img/profile_img.jpg
 description: Minimal is a theme for GitHub Pages.
 show_downloads: false
-google_analytics:
+google_analytics: false
 theme: jekyll-theme-minimal
