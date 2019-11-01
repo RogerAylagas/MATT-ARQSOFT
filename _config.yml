@@ -1,6 +1,17 @@
 title: Roger Aylagas
 profile_img: /assets/img/profile_img.jpg
-description: Minimal is a theme for GitHub Pages.
+description: MATT-ARQSOFT
+
+location_icon: /assets/icon/location_icon.png
+location: Barcelona, Spain
+
+linkedin_icon: /assets/img/linkedin_icon.jpg
+linkedin: Roger Aylagas
+linkedin_link: https://www.linkedin.com/in/roger-aylagas-torres/
+
+email_icon: /assets/img/email_icon.jpg
+email: rogeraylagas97@gmail.com
+
 show_downloads: false
 google_analytics: false
 theme: jekyll-theme-minimal

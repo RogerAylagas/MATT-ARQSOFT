@@ -20,6 +20,18 @@
         {% if site.profile_img %}
           <img src="{{site.profile_img | relative_url}}" alt="Profile Image" width="200"/>
         {% endif %}
+        {% if site.location %}
+          <p>
+            <img src="{{site.location_icon | relative_url}}" alt="Location"/>
+            <a src = "{{site.location | relative_url}}">  </a> 
+          </p>
+        {% endif %}
+        {% if site.linkedin %}
+          <img src="{{site.profile_img | relative_url}}" alt="Profile Image" width="200"/>
+        {% endif %}
+        {% if site.email %}
+          <img src="{{site.profile_img | relative_url}}" alt="Profile Image" width="200"/>
+        {% endif %}
 
         {% if site.show_downloads %}
         <ul class="downloads">
