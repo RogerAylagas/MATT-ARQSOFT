@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="{{ site.lang | default: "en-US" }}">
   <head>
     <meta charset="UTF-8">
@@ -17,7 +18,7 @@
         <h1><a href="{{ "/" | absolute_url }}">{{ site.title | default: site.github.repository_name }}</a></h1>
         
         {% if site.profile_img %}
-          <img src="{{site.profile_img | relative_url}}" alt="Profile Image" />
+          <img src="{{site.profile_img | relative_url}}" alt="Profile Image" width="70%" height="70%"/>
         {% endif %}
 
         <p>{{ site.description | default: site.github.project_tagline }}</p>
