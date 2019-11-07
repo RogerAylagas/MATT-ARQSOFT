@@ -10,9 +10,11 @@ package edu.upc.etsetb.arqsoft.chess2019.server;
  * @author Roger Aylagas Torres
  */
 public class Knight extends Piece{
-
+    private boolean side;
+    
     public Knight(int init_row, int init_col, boolean color, boolean side) {
-        super(init_row, init_col, color, side);
+        super(init_row, init_col, color);
+        this.side = side;
     }
     
 }

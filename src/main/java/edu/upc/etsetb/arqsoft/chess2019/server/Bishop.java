@@ -11,8 +11,10 @@ package edu.upc.etsetb.arqsoft.chess2019.server;
  */
 public class Bishop extends Piece{
 
-    public Bishop(int init_row, int init_col, boolean color, boolean side) {
-        super(init_row, init_col, color, side);
-    }
+    private boolean side;
     
+    public Bishop(int init_row, int init_col, boolean color, boolean side) {
+        super(init_row, init_col, color);
+        this.side = side;
+    }
 }

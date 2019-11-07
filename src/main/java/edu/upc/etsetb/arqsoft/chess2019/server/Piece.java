@@ -14,35 +14,13 @@ public abstract class Piece {
     private int init_row;
     private int init_col;
     private boolean color;
-    private boolean side;
 
-    public Piece(int init_row, int init_col, boolean color, boolean side) {
+    public Piece(int init_row, int init_col, boolean color) {
         this.init_row = init_row;
         this.init_col = init_col;
         this.color = color;
-        this.side = side;
     }
     
-
-    /**
-     * Get the value of side
-     *
-     * @return the value of side
-     */
-    public boolean isSide() {
-        return side;
-    }
-
-    /**
-     * Set the value of side
-     *
-     * @param side new value of side
-     */
-    public void setSide(boolean side) {
-        this.side = side;
-    }
-
-
     /**
      * Get the value of color
      *

@@ -12,9 +12,38 @@ package edu.upc.etsetb.arqsoft.chess2019.server;
 public class Square {
     
     private boolean color;
+    private Piece piece;
 
     public Square(boolean color) {
         this.color = color;
+        this.piece = null;
+    }
+
+    /**
+     * Set a Piece to the square
+     *
+     * @param Piece new value of piece
+     */
+    public void setPiece(Piece piece) {
+        this.piece = piece;
+    }
+    
+    /**
+     * Remove the piece from the square
+     *
+     * @param null new value of piece
+     */
+    public void removePiece(){
+        this.piece = null;
+    }
+
+    /**
+     * Get the piece in the square
+     *
+     * @return The piece contained in the square if any
+     */
+    public Piece getPiece() {
+        return piece;
     }
     
     /**

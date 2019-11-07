@@ -17,6 +17,14 @@ public class Movement {
     private String dest_col;
     private String action;
 
+    public Movement(String init_row, String init_col, String dest_row, String dest_col, String action) {
+        this.init_row = init_row;
+        this.init_col = init_col;
+        this.dest_row = dest_row;
+        this.dest_col = dest_col;
+        this.action = action;
+    }
+
     /**
      * Get the value of action
      *

@@ -14,6 +14,11 @@ public abstract class Timer {
     private int time_left_p1;
     private int time_left_p2;
 
+    public Timer(int time_left_p1, int time_left_p2) {
+        this.time_left_p1 = time_left_p1;
+        this.time_left_p2 = time_left_p2;
+    }
+
     /**
      * Get the value of time_left_p2
      *

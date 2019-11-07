@@ -5,6 +5,10 @@
  */
 package edu.upc.etsetb.arqsoft.chess2019.server;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Random;
+
 /**
  *
  * @author Roger Aylagas Torres
@@ -20,6 +24,28 @@ public class ChessGame {
     private Player player2;
     private ChessBoard board;
 
+    public ChessGame() {        
+        Random random = new Random();
+        boolean p1_color = random.nextBoolean();
+        boolean p2_color = !p1_color;
+        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        Date date = new Date(System.currentTimeMillis());
+        String fileName = formatter.format(date).concat(".txt");
+        
+        this.winner = 0;
+        this.isDraw = false;
+        this.type = type;
+        this.timer = new ClassicTimer();
+        this.board = new ChessBoard();
+        this.player1 = new Player("Player1", "00000001", p1_color);
+        this.player2 = new Player("Player2", "00000002", p2_color);
+        
+        player1.putPiecesToBoard(this.board);
+        player2.putPiecesToBoard(this.board);
+        
+        this.trace = new Trace(fileName);
+    }
+    
     /**
      * Get the value of type
      *

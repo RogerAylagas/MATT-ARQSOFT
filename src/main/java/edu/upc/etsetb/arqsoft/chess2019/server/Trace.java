@@ -6,6 +6,9 @@
 package edu.upc.etsetb.arqsoft.chess2019.server;
 
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  *
@@ -14,8 +17,24 @@ import java.io.File;
 public class Trace {
     
     private String txtPath;
-    private File txtFile;
+    private FileWriter writer;
+    private FileReader reader;
 
+    public Trace(String txtName) {
+        String folder = "history/";
+        this.txtPath = folder.concat(txtName);
+        try(FileWriter w = new FileWriter(this.txtPath)){
+            this.writer = w;
+        }catch (IOException e){
+            System.err.println("NO EXISTING FILE NAMED ".concat(this.txtPath));
+        }
+        try(FileReader r = new FileReader(this.txtPath)){
+            this.reader = r;
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+    
     /**
      * Get the value of txtPath
      *

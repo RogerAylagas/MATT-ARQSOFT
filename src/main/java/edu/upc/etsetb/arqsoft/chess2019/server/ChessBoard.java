@@ -28,6 +28,9 @@ public class ChessBoard {
             }
         }
     }
-    
+
+    public HashMap<String, Square> getSquares() {
+        return squares;
+    }
     
 }

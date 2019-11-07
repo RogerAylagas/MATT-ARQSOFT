@@ -11,8 +11,8 @@ package edu.upc.etsetb.arqsoft.chess2019.server;
  */
 public class Queen extends Piece{
 
-    public Queen(int init_row, int init_col, boolean color, boolean side) {
-        super(init_row, init_col, color, side);
+    public Queen(int init_row, int init_col, boolean color) {
+        super(init_row, init_col, color);
     }
     
 }
