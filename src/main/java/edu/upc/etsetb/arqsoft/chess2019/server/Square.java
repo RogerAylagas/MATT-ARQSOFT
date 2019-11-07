@@ -13,6 +13,10 @@ public class Square {
     
     private boolean color;
 
+    public Square(boolean color) {
+        this.color = color;
+    }
+    
     /**
      * Get the value of color
      *
