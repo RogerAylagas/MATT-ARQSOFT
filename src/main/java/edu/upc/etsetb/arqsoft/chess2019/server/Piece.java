@@ -16,6 +16,14 @@ public abstract class Piece {
     private boolean color;
     private boolean side;
 
+    public Piece(int init_row, int init_col, boolean color, boolean side) {
+        this.init_row = init_row;
+        this.init_col = init_col;
+        this.color = color;
+        this.side = side;
+    }
+    
+
     /**
      * Get the value of side
      *

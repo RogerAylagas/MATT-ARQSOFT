@@ -10,5 +10,9 @@ package edu.upc.etsetb.arqsoft.chess2019.server;
  * @author Roger Aylagas Torres
  */
 public class King extends Piece{
+
+    public King(int init_row, int init_col, boolean color, boolean side) {
+        super(init_row, init_col, color, side);
+    }
     
 }
