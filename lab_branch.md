@@ -1,11 +1,6 @@
 ---
 layout: default
-layout: buttons
 ---
-
-<a class="github-button" href="https://github.com/RogerAylagas/MATT-ARQSOFT/archive/lab.zip" data-icon="octicon-cloud-download" aria-label="Download RogerAylagas/MATT-ARQSOFT on GitHub">Download</a>
-<a class="github-button" href="https://github.com/RogerAylagas/MATT-ARQSOFT" data-icon="octicon-star" data-show-count="true" aria-label="Star RogerAylagas/MATT-ARQSOFT on GitHub">Star</a>
-
 
 # Laboratory Project
 The laboratory project of the subject consists on analysing and designing a client-server software for playing chess.
