@@ -12,7 +12,7 @@ email_icon: /assets/icon/email_icon.png
 email: mailto:rogeraylagas97@gmail.com
 
 cv_icon: /assets/icon/cv_icon.png
-cv: \assets\docs\cv.pdf
+cv: assets\docs\cv.pdf
 
 show_downloads: false
 google_analytics: false
