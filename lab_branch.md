@@ -19,7 +19,7 @@ With the Use Cases of all levels developed, now it is time to design the concept
 
 ![ConceptualClasses](assets\docs\lab\domain_model_chess.png)
 
-It mus be said that this result has been achieved by iterating many times and refining it to better achieve the requirements of the client.
+It must be said that this result has been achieved by iterating many times and refining it to better achieve the requirements of the client.
 
 ## Design
 
