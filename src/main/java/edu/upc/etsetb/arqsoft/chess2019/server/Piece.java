@@ -21,6 +21,10 @@ public abstract class Piece {
         this.color = color;
     }
     
+    public abstract boolean isPieceMovement(int rO, int cO, int rD, int cD);
+    public abstract boolean isPathFree(int rO, int cO, int rD, int cD, ChessBoard board);
+    
+    
     /**
      * Get the value of color
      *
