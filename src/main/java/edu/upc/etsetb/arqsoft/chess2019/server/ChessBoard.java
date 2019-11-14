@@ -12,7 +12,7 @@ import java.util.HashMap;
  * @author Roger Aylagas Torres
  */
 public class ChessBoard {
-    Square[][] squares;
+    private Square[][] squares;
 
     public ChessBoard() {
         this.squares = new Square[8][8];
@@ -28,4 +28,16 @@ public class ChessBoard {
             }
         }
     }
+
+    public Square[][] getSquares() {
+        return squares;
+    }
+
+    public void setSquares(Square[][] squares) {
+        this.squares = squares;
+    }
+    
+    
+    
+    
 }
