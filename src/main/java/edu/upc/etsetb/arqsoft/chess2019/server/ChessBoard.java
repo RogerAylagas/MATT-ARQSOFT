@@ -28,10 +28,4 @@ public class ChessBoard {
             }
         }
     }
-
-    public ChessBoard() {
-        this.squares = squares;
-    }
-
-    
 }
