@@ -111,7 +111,74 @@ public class Game {
                     return;
             }
         }
-                
+        
+        //If opponent piece is in destination
+        if(this.board.getSquares()[rD][cD].getPiece()!=null){
+
+            this.board.getSquares()[rD][cD].removePiece();
+            Piece movingPiece = this.board.getSquares()[rO][cO].getPiece();
+            this.board.getSquares()[rO][cO].removePiece();
+            this.board.getSquares()[rD][cD].setPiece(movingPiece);
+
+            if(movingPiece.isColor()==player1.isColor()){
+                for (HashMap.Entry<String, Piece> entry : player1.getPieces().entrySet()) {
+                    Piece piece = (Piece)entry.getValue();
+                    if(piece.getCurr_row()==rO && piece.getCurr_col()==cO){
+                         player1.getPieces().get(entry.getKey()).setCurr_row(rD);
+                         player1.getPieces().get(entry.getKey()).setCurr_col(cD);
+                    }
+                }
+                for (HashMap.Entry<String, Piece> entry : player2.getPieces().entrySet()) {
+                    Piece piece = (Piece)entry.getValue();
+                    if(piece.getCurr_row()==rD && piece.getCurr_col()==cD){
+                         player2.getPieces().remove(entry.getKey());
+                    }
+                }
+            }else{
+                for (HashMap.Entry<String, Piece> entry : player2.getPieces().entrySet()) {
+                    Piece piece = (Piece)entry.getValue();
+                    if(piece.getCurr_row()==rO && piece.getCurr_col()==cO){
+                         player2.getPieces().get(entry.getKey()).setCurr_row(rD);
+                         player2.getPieces().get(entry.getKey()).setCurr_col(cD);
+                    }
+                }
+                for (HashMap.Entry<String, Piece> entry : player1.getPieces().entrySet()) {
+                    Piece piece = (Piece)entry.getValue();
+                    if(piece.getCurr_row()==rD && piece.getCurr_col()==cD){
+                         player1.getPieces().remove(entry.getKey());
+                    }
+                }
+            }
+        }else{
+            this.board.getSquares()[rD][cD].removePiece();
+            Piece movingPiece = this.board.getSquares()[rO][cO].getPiece();
+            this.board.getSquares()[rO][cO].removePiece();
+            this.board.getSquares()[rD][cD].setPiece(movingPiece);
+
+            if(movingPiece.isColor()==player1.isColor()){
+                for (HashMap.Entry<String, Piece> entry : player1.getPieces().entrySet()) {
+                    Piece piece = (Piece)entry.getValue();
+                    if(piece.getCurr_row()==rO && piece.getCurr_col()==cO){
+                         player1.getPieces().get(entry.getKey()).setCurr_row(rD);
+                         player1.getPieces().get(entry.getKey()).setCurr_col(cD);
+                    }
+                }
+            }else{
+                for (HashMap.Entry<String, Piece> entry : player2.getPieces().entrySet()) {
+                    Piece piece = (Piece)entry.getValue();
+                    if(piece.getCurr_row()==rO && piece.getCurr_col()==cO){
+                         player2.getPieces().get(entry.getKey()).setCurr_row(rD);
+                         player2.getPieces().get(entry.getKey()).setCurr_col(cD);
+                    }
+                }
+            }
+        }
+
+        this.playingColor = !this.playingColor;
+        
+        //TODO: Create Object message
+        //TODO: Store Message
+
        /* 
         DO NOT CHANGE THE CODE BELOW.
         FINAL PART OF THE METHOD. IF ARRIVED HERE, THE MOVEMENT CAN BE PERFORMED
