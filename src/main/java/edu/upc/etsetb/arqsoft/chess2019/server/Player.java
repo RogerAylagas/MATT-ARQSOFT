@@ -70,12 +70,17 @@ public class Player {
             Piece piece = (Piece)entry.getValue();
             int row = piece.getInit_row();
             int col = piece.getInit_col();
-            Square square = (Square)board.getSquares().get(String.valueOf(row).concat(String.valueOf(col)));
-            square.setPiece(piece);
-            board.getSquares().put(String.valueOf(row).concat(String.valueOf(col)), square);
+            board.getSquares()[row][col].setPiece(piece);
         }
     }
-    
+
+    public HashMap<String, Piece> getPieces() {
+        return pieces;
+    }
+
+    public void setPieces(HashMap<String, Piece> pieces) {
+        this.pieces = pieces;
+    }
     
     /**
      * Get the value of color

@@ -7,7 +7,10 @@ package edu.upc.etsetb.arqsoft.chess2019.server;
 import java.io.IOException;
 import static java.lang.Math.abs;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Random;
 /**
  *
@@ -62,8 +65,8 @@ public class Game {
         NOTE: USE THE FOLLOWING UNCOMMENTED INSTRUCTION FOR SENDING AN ERROR MESSAGE TO THE CLIENT.
         AN ERROR MESSAGE SHALL BE AN END-OF-LINE FREE STRING STARTING WITH "E "
         */
-        Piece oPiece = this.board.squares[rO][cO].getPiece();
-        Piece dPiece = this.board.squares[rD][cD].getPiece();
+        Piece oPiece = this.board.getSquares()[rO][cO].getPiece();
+        Piece dPiece = this.board.getSquares()[rD][cD].getPiece();
         
         if(oPiece == null || (oPiece.isColor()!=this.playingColor) ){
             this.protMngr.sendFromServerToClient("E this is an error message");
@@ -73,9 +76,9 @@ public class Game {
             //TODO: Check isPieceMove(rO, cO, rD, cD)
             if(!oPiece.isPieceMovement(rO, cO, rD, cD)) return;
             //TODO: Check isPathFree(rO, cO, rD, cD, b)
-            
+            if(!oPiece.isPathFree(rO, cO, rD, cD, this.board)) return;
             //TODO: Check isKingOfMovingThreatened()
-
+            if()
         }
             
         
@@ -102,7 +105,37 @@ public class Game {
 
     }
     
-
+    private boolean isKingOfMovingThreatened(HashMap<String,Piece> opPieces, Piece currKing, ChessBoard board, int[] move){
+        int rO = move[0];
+        int cO = move[1];
+        int rD = move[2];
+        int cD = move[3];
+        int k_row = currKing.getCurr_row();
+        int k_col = currKing.getCurr_col();
+        ArrayList<String> keyPieces = new ArrayList<String>(Arrays.asList(
+                "pawn1","pawn2", "pawn3", "pawn4","pawn5", "pawn6",
+                "pawn7", "pawn8", "q_rook", "k_rook", "king", "queen",
+                "q_knight", "q_bishop", "k_knight", "k_bishop"));
+        Piece pieceToMove = board.getSquares()[rO][cO].getPiece();
+        board.getSquares()[rO][cO].removePiece();
+        Piece phantom = pieceToMove;
+        phantom.setCurr_row(rD);
+        phantom.setCurr_col(cD);
+        board.getSquares()[rD][cD].setPiece(phantom);
+        for (String key: keyPieces) {
+            Piece opPiece = opPieces.get(key);
+            if(opPiece!=null)
+                if(opPiece.isPieceMovement(opPiece.getCurr_row(), opPiece.getCurr_col(),
+                        k_row, k_col) && opPiece.isPathFree(opPiece.getCurr_row(), 
+                        opPiece.getCurr_col(),k_row, k_col, board))
+                    board.getSquares()[rD][cD].removePiece();
+                    board.getSquares()[rO][cO].setPiece(pieceToMove);
+                    return true;
+        }
+        board.getSquares()[rD][cD].removePiece();
+        board.getSquares()[rO][cO].setPiece(pieceToMove);
+        return false;
+    }
 
     private boolean assessCheckOrCheckMate(StringBuilder assessMess) {
         // IF THE PROGRAM SHOULD BE COMPLETED, IT SHOULD BE IMPLEMENTED

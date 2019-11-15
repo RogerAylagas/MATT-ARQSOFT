@@ -13,16 +13,37 @@ public abstract class Piece {
     
     private int init_row;
     private int init_col;
+    private int curr_row;
+    private int curr_col;
     private boolean color;
 
     public Piece(int init_row, int init_col, boolean color) {
         this.init_row = init_row;
         this.init_col = init_col;
+        this.curr_row = init_row;
+        this.curr_col = init_col;
         this.color = color;
     }
     
     public abstract boolean isPieceMovement(int rO, int cO, int rD, int cD);
     public abstract boolean isPathFree(int rO, int cO, int rD, int cD, ChessBoard board);
+
+    public int getCurr_row() {
+        return curr_row;
+    }
+
+    public void setCurr_row(int curr_row) {
+        this.curr_row = curr_row;
+    }
+
+    public int getCurr_col() {
+        return curr_col;
+    }
+
+    public void setCurr_col(int curr_col) {
+        this.curr_col = curr_col;
+    }
+    
     
     
     /**
