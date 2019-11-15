@@ -28,6 +28,7 @@ public class Game {
     private Player player2;
     private ChessBoard board;
     private boolean playingColor;
+    
     //TODO: Create another constructor for changing game type
     
     public Game() throws IOException {
@@ -66,23 +67,47 @@ public class Game {
         AN ERROR MESSAGE SHALL BE AN END-OF-LINE FREE STRING STARTING WITH "E "
         */
         Piece oPiece = this.board.getSquares()[rO][cO].getPiece();
-        Piece dPiece = this.board.getSquares()[rD][cD].getPiece();
-        
         if(oPiece == null || (oPiece.isColor()!=this.playingColor) ){
             this.protMngr.sendFromServerToClient("E this is an error message");
-        }else if(dPiece != null && (dPiece.isColor()==this.playingColor)){
-            this.protMngr.sendFromServerToClient("E this is an error message");
-        }else{
-            //TODO: Check isPieceMove(rO, cO, rD, cD)
-            if(!oPiece.isPieceMovement(rO, cO, rD, cD)) return;
-            //TODO: Check isPathFree(rO, cO, rD, cD, b)
-            if(!oPiece.isPathFree(rO, cO, rD, cD, this.board)) return;
-            //TODO: Check isKingOfMovingThreatened()
-            if()
+            return;
         }
-            
+        Piece dPiece = this.board.getSquares()[rD][cD].getPiece();
         
-        
+        if(dPiece != null && (dPiece.isColor()==this.playingColor)){
+            this.protMngr.sendFromServerToClient("E this is an error message");
+            return;
+        }
+
+        if(this.playingColor){
+            if(this.player1.isColor()){
+                if(!player1.canReachDestination(rO, cO, rD, cD, this.board))return;
+                if(this.isKingOfMovingThreatened(this.player2.getPieces(), 
+                        this.player1.getPieces().get("king"), this.getBoard(),
+                        new int[]{rO, cO, rD, cD}))
+                    return;
+            }else{
+                if(!player2.canReachDestination(rO, cO, rD, cD, this.board))return;
+                if(this.isKingOfMovingThreatened(this.player1.getPieces(), 
+                        this.player2.getPieces().get("king"), this.getBoard(),
+                        new int[]{rO, cO, rD, cD}))
+                    return;
+            }                
+        }else{
+            if(this.player1.isColor()){
+                if(!player2.canReachDestination(rO, cO, rD, cD, this.board))return;
+                if(this.isKingOfMovingThreatened(this.player1.getPieces(), 
+                        this.player2.getPieces().get("king"), this.getBoard(),
+                        new int[]{rO, cO, rD, cD}))
+                    return;
+            }else{
+                if(!player1.canReachDestination(rO, cO, rD, cD, this.board))return;
+                if(this.isKingOfMovingThreatened(this.player2.getPieces(), 
+                        this.player1.getPieces().get("king"), this.getBoard(),
+                        new int[]{rO, cO, rD, cD}))
+                    return;
+            }
+        }
+                
        /* 
         DO NOT CHANGE THE CODE BELOW.
         FINAL PART OF THE METHOD. IF ARRIVED HERE, THE MOVEMENT CAN BE PERFORMED
@@ -146,6 +171,64 @@ public class Game {
         // IF THE PROGRAM SHOULD BE COMPLETED, IT SHOULD BE IMPLEMENTED
         return ;
     }
+
+    public ServerProtocolMngr getProtMngr() {
+        return protMngr;
+    }
+
+    public void setProtMngr(ServerProtocolMngr protMngr) {
+        this.protMngr = protMngr;
+    }
+
+    public Timer getTimer() {
+        return timer;
+    }
+
+    public void setTimer(Timer timer) {
+        this.timer = timer;
+    }
+
+    public Trace getTrace() {
+        return trace;
+    }
+
+    public void setTrace(Trace trace) {
+        this.trace = trace;
+    }
+
+    public Player getPlayer1() {
+        return player1;
+    }
+
+    public void setPlayer1(Player player1) {
+        this.player1 = player1;
+    }
+
+    public Player getPlayer2() {
+        return player2;
+    }
+
+    public void setPlayer2(Player player2) {
+        this.player2 = player2;
+    }
+
+    public ChessBoard getBoard() {
+        return board;
+    }
+
+    public void setBoard(ChessBoard board) {
+        this.board = board;
+    }
+
+    public boolean isPlayingColor() {
+        return playingColor;
+    }
+
+    public void setPlayingColor(boolean playingColor) {
+        this.playingColor = playingColor;
+    }
+    
+    
     
      /**
      * Get the value of type

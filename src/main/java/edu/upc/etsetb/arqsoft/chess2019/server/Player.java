@@ -73,6 +73,13 @@ public class Player {
             board.getSquares()[row][col].setPiece(piece);
         }
     }
+    
+    public boolean canReachDestination(int rO, int cO, int rD, int cD, ChessBoard board){
+        Piece oPiece = board.getSquares()[rO][cO].getPiece();
+        if(!oPiece.isPieceMovement(rO, cO, rD, cD)) return false;
+        if(!oPiece.isPathFree(rO, cO, rD, cD, board)) return false;
+        return true;
+    }
 
     public HashMap<String, Piece> getPieces() {
         return pieces;
