@@ -18,11 +18,13 @@ public class King extends Piece{
     }
     
     public boolean isPieceMovement(int rO, int cO, int rD, int cD){
-        int rm = abs(rO-rD);
-        int cm = abs(cO-cD);
-        if(!(rO-1<=rm && rm<=8-rO && cO-1<=cm && cm<=8-cO && (rm+cm!=0))) return false;
+        int arm = abs(rO-rD);
+        int acm = abs(cO-cD);
+        int rm = rO-rD;
+        int cm = cO-cD;
+        if(!(rO-1<=arm && arm<=8-rO && cO-1<=acm && acm<=8-cO && (arm+acm!=0))) return false;
         //TODO: Particular movement
-        
+
         return true;
     }
     
