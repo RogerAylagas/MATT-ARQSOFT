@@ -33,7 +33,7 @@ public class Game {
     
     public Game() throws IOException {
         Random random = new Random();
-        this.playingColor = false;
+        this.playingColor = true;
         boolean p1_color = random.nextBoolean();
         boolean p2_color = !p1_color;
         SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
@@ -72,13 +72,13 @@ public class Game {
         cD = cD-1;
         Piece oPiece = this.board.getSquares()[rO][cO].getPiece();
         if(oPiece == null || (oPiece.isColor()!=this.playingColor) ){
-            this.protMngr.sendFromServerToClient("E this is an error message");
+            this.protMngr.sendFromServerToClient("E Select a piece of your color");
             return;
         }
         Piece dPiece = this.board.getSquares()[rD][cD].getPiece();
         
         if(dPiece != null && (dPiece.isColor()==this.playingColor)){
-            this.protMngr.sendFromServerToClient("E this is an error message");
+            this.protMngr.sendFromServerToClient("E Select a valid destination square");
             return;
         }
 
