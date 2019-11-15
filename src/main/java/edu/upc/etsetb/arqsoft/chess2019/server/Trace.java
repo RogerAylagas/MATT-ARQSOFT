@@ -21,6 +21,8 @@ public class Trace {
     private FileReader reader;
 
     public Trace(String txtName) {
+        //TODO: Create Trace
+        /*
         String folder = "history/";
         this.txtPath = folder.concat(txtName);
         try(FileWriter w = new FileWriter(this.txtPath)){
@@ -33,6 +35,7 @@ public class Trace {
         }catch (IOException e){
             e.printStackTrace();
         }
+        */
     }
     
     /**

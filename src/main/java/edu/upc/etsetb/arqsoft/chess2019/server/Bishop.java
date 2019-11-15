@@ -20,7 +20,7 @@ public class Bishop extends Piece{
         this.side = side;
     }
     
-    public boolean isPieceMovement(int rO, int cO, int rD, int cD){
+    public boolean isPieceMovement(int rO, int cO, int rD, int cD, ChessBoard board){
         int rm = abs(rO-rD);
         int cm = abs(cO-cD);
         if(!(rO-1<=rm && rm<=8-rO && cO-1<=cm && cm<=8-cO && (rm+cm!=0))){

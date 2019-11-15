@@ -33,7 +33,7 @@ public class Game {
     
     public Game() throws IOException {
         Random random = new Random();
-        this.playingColor = true;
+        this.playingColor = false;
         boolean p1_color = random.nextBoolean();
         boolean p2_color = !p1_color;
         SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
@@ -66,6 +66,10 @@ public class Game {
         NOTE: USE THE FOLLOWING UNCOMMENTED INSTRUCTION FOR SENDING AN ERROR MESSAGE TO THE CLIENT.
         AN ERROR MESSAGE SHALL BE AN END-OF-LINE FREE STRING STARTING WITH "E "
         */
+        rO = rO-1;
+        cO = cO-1;
+        rD = rD-1;
+        cD = cD-1;
         Piece oPiece = this.board.getSquares()[rO][cO].getPiece();
         if(oPiece == null || (oPiece.isColor()!=this.playingColor) ){
             this.protMngr.sendFromServerToClient("E this is an error message");
@@ -137,26 +141,25 @@ public class Game {
         int cD = move[3];
         int k_row = currKing.getCurr_row();
         int k_col = currKing.getCurr_col();
-        ArrayList<String> keyPieces = new ArrayList<String>(Arrays.asList(
-                "pawn1","pawn2", "pawn3", "pawn4","pawn5", "pawn6",
-                "pawn7", "pawn8", "q_rook", "k_rook", "king", "queen",
-                "q_knight", "q_bishop", "k_knight", "k_bishop"));
+
         Piece pieceToMove = board.getSquares()[rO][cO].getPiece();
         board.getSquares()[rO][cO].removePiece();
         Piece phantom = pieceToMove;
         phantom.setCurr_row(rD);
         phantom.setCurr_col(cD);
         board.getSquares()[rD][cD].setPiece(phantom);
-        for (String key: keyPieces) {
-            Piece opPiece = opPieces.get(key);
-            if(opPiece!=null)
+        
+        for (HashMap.Entry<String, Piece> entry : opPieces.entrySet()){
+             Piece opPiece = (Piece)entry.getValue();
+             if(opPiece!=null)
                 if(opPiece.isPieceMovement(opPiece.getCurr_row(), opPiece.getCurr_col(),
-                        k_row, k_col) && opPiece.isPathFree(opPiece.getCurr_row(), 
+                        k_row, k_col, this.board) && opPiece.isPathFree(opPiece.getCurr_row(), 
                         opPiece.getCurr_col(),k_row, k_col, board))
                     board.getSquares()[rD][cD].removePiece();
                     board.getSquares()[rO][cO].setPiece(pieceToMove);
                     return true;
         }
+
         board.getSquares()[rD][cD].removePiece();
         board.getSquares()[rO][cO].setPiece(pieceToMove);
         return false;

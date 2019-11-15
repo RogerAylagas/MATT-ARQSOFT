@@ -17,7 +17,7 @@ public class Queen extends Piece{
         super(init_row, init_col, color);
     }
     
-    public boolean isPieceMovement(int rO, int cO, int rD, int cD){
+    public boolean isPieceMovement(int rO, int cO, int rD, int cD, ChessBoard board){
         int arm = abs(rO-rD);
         int acm = abs(cO-cD);
         int rm = rO-rD;
@@ -28,4 +28,7 @@ public class Queen extends Piece{
         return true;
     }
     
+    public boolean isPathFree(int rO, int cO, int rD, int cD, ChessBoard board){
+        return true;
+    }
 }

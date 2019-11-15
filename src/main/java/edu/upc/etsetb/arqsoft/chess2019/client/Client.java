@@ -8,6 +8,7 @@ package edu.upc.etsetb.arqsoft.chess2019.client;
 import edu.upc.etsetb.arqsoft.chess2019.server.Game;
 import edu.upc.etsetb.arqsoft.chess2019.server.ServerNetworkAdapter;
 import edu.upc.etsetb.arqsoft.chess2019.server.ServerProtocolMngr;
+import java.io.IOException;
 import java.util.Scanner;
 
 /**
@@ -58,12 +59,12 @@ public abstract class Client {
         this.factory = factory;
     }
 
-    public void play() {
+    public void play() throws IOException {
         this.prepareFramework();
         this.interactWithPlayer();
     }
 
-    protected void prepareFramework() {
+    protected void prepareFramework() throws IOException {
         this.board = factory.createUIBoard();
         this.board.setFactory(factory);
         this.board.createAndPutPieces();
@@ -92,7 +93,7 @@ public abstract class Client {
         
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Text ('text') or Graphic ('graphic') user interface? - Graphic not available for the moment-");
         String tClient = scanner.nextLine();

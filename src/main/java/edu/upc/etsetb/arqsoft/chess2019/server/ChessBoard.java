@@ -18,8 +18,8 @@ public class ChessBoard {
         this.squares = new Square[8][8];
         boolean[] odd_row = new boolean[]{true, false, true, false, true, false, true, false};
         boolean[] even_row = new boolean[]{false, true, false, true, false, true, false, true};
-        for (int i = 1; i < 9; ++i) {
-            for (int j = 1; j < 9; ++j) {
+        for (int i = 0; i < 8; ++i) {
+            for (int j = 0; j < 8; ++j) {
                 if(i%2==0){
                     this.squares[i][j] = new Square(even_row[j]);
                 }else{

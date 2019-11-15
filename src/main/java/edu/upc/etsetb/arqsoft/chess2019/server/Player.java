@@ -26,42 +26,42 @@ public class Player {
         this.pieces = new HashMap<String,Piece>();
         
         if(color){
-            this.pieces.put("pawn1", new Pawn(7, 1,this.color));
-            this.pieces.put("pawn2", new Pawn(7, 2,this.color));
-            this.pieces.put("pawn3", new Pawn(7, 3,this.color));
-            this.pieces.put("pawn4", new Pawn(7, 4,this.color));
-            this.pieces.put("pawn5", new Pawn(7, 5,this.color));
-            this.pieces.put("pawn6", new Pawn(7, 6,this.color));
-            this.pieces.put("pawn7", new Pawn(7, 7,this.color));
-            this.pieces.put("pawn8", new Pawn(7, 8,this.color));
+            this.pieces.put("pawn1", new Pawn(6, 0,this.color));
+            this.pieces.put("pawn2", new Pawn(6, 1,this.color));
+            this.pieces.put("pawn3", new Pawn(6, 2,this.color));
+            this.pieces.put("pawn4", new Pawn(6, 3,this.color));
+            this.pieces.put("pawn5", new Pawn(6, 4,this.color));
+            this.pieces.put("pawn6", new Pawn(6, 5,this.color));
+            this.pieces.put("pawn7", new Pawn(6, 6,this.color));
+            this.pieces.put("pawn8", new Pawn(6, 7,this.color));
             
-            this.pieces.put("q_rook", new Rook(8, 1, this.color, false));
-            this.pieces.put("q_knight", new Knight(8, 2, this.color, false));
-            this.pieces.put("q_bishop", new Bishop(8, 3, this.color, false));
-            this.pieces.put("queen", new Queen(8, 4, this.color));
-            this.pieces.put("king", new King(8, 5, this.color));
-            this.pieces.put("k_bishop", new Bishop(8, 6, this.color, true));
-            this.pieces.put("k_knight", new Knight(8, 7, this.color, true));
-            this.pieces.put("k_rook", new Rook(8, 8, this.color, true));
+            this.pieces.put("q_rook", new Rook(7, 0, this.color, false));
+            this.pieces.put("q_knight", new Knight(7, 1, this.color, false));
+            this.pieces.put("q_bishop", new Bishop(7, 2, this.color, false));
+            this.pieces.put("queen", new Queen(7, 3, this.color));
+            this.pieces.put("king", new King(7, 4, this.color));
+            this.pieces.put("k_bishop", new Bishop(7, 5, this.color, true));
+            this.pieces.put("k_knight", new Knight(7, 6, this.color, true));
+            this.pieces.put("k_rook", new Rook(7, 7, this.color, true));
             
         }else{
-            this.pieces.put("pawn1", new Pawn(2, 1,this.color));
-            this.pieces.put("pawn2", new Pawn(2, 2,this.color));
-            this.pieces.put("pawn3", new Pawn(2, 3,this.color));
-            this.pieces.put("pawn4", new Pawn(2, 4,this.color));
-            this.pieces.put("pawn5", new Pawn(2, 5,this.color));
-            this.pieces.put("pawn6", new Pawn(2, 6,this.color));
-            this.pieces.put("pawn7", new Pawn(2, 7,this.color));
-            this.pieces.put("pawn8", new Pawn(2, 8,this.color));
+            this.pieces.put("pawn1", new Pawn(1, 0,this.color));
+            this.pieces.put("pawn2", new Pawn(1, 1,this.color));
+            this.pieces.put("pawn3", new Pawn(1, 2,this.color));
+            this.pieces.put("pawn4", new Pawn(1, 3,this.color));
+            this.pieces.put("pawn5", new Pawn(1, 4,this.color));
+            this.pieces.put("pawn6", new Pawn(1, 5,this.color));
+            this.pieces.put("pawn7", new Pawn(1, 6,this.color));
+            this.pieces.put("pawn8", new Pawn(1, 7,this.color));
             
-            this.pieces.put("q_rook", new Rook(1, 1, this.color, false));
-            this.pieces.put("q_knight", new Knight(1, 2, this.color, false));
-            this.pieces.put("q_bishop", new Bishop(1, 3, this.color, false));
-            this.pieces.put("queen", new Queen(1, 4, this.color));
-            this.pieces.put("king", new King(1, 5, this.color));
-            this.pieces.put("k_bishop", new Bishop(1, 6, this.color, true));
-            this.pieces.put("k_knight", new Knight(1, 7, this.color, true));
-            this.pieces.put("k_rook", new Rook(1, 8, this.color, true));
+            this.pieces.put("q_rook", new Rook(0, 0, this.color, false));
+            this.pieces.put("q_knight", new Knight(0, 1, this.color, false));
+            this.pieces.put("q_bishop", new Bishop(0, 2, this.color, false));
+            this.pieces.put("queen", new Queen(0, 3, this.color));
+            this.pieces.put("king", new King(0, 4, this.color));
+            this.pieces.put("k_bishop", new Bishop(0, 5, this.color, true));
+            this.pieces.put("k_knight", new Knight(0, 6, this.color, true));
+            this.pieces.put("k_rook", new Rook(0, 7, this.color, true));
         }
     }
     
@@ -76,7 +76,7 @@ public class Player {
     
     public boolean canReachDestination(int rO, int cO, int rD, int cD, ChessBoard board){
         Piece oPiece = board.getSquares()[rO][cO].getPiece();
-        if(!oPiece.isPieceMovement(rO, cO, rD, cD)) return false;
+        if(!oPiece.isPieceMovement(rO, cO, rD, cD, board)) return false;
         if(!oPiece.isPathFree(rO, cO, rD, cD, board)) return false;
         return true;
     }

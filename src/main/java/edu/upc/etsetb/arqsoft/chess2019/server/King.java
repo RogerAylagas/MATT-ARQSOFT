@@ -17,7 +17,7 @@ public class King extends Piece{
         super(init_row, init_col, color);
     }
     
-    public boolean isPieceMovement(int rO, int cO, int rD, int cD){
+    public boolean isPieceMovement(int rO, int cO, int rD, int cD, ChessBoard board){
         int arm = abs(rO-rD);
         int acm = abs(cO-cD);
         int rm = rO-rD;
@@ -25,6 +25,10 @@ public class King extends Piece{
         if(!(rO-1<=arm && arm<=8-rO && cO-1<=acm && acm<=8-cO && (arm+acm!=0))) return false;
         //TODO: Particular movement
 
+        return true;
+    }
+    
+        public boolean isPathFree(int rO, int cO, int rD, int cD, ChessBoard board){
         return true;
     }
     
