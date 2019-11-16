@@ -81,34 +81,58 @@ public class Game {
             this.protMngr.sendFromServerToClient("E Select a valid destination square");
             return;
         }
-
+        
         if(this.playingColor){
             if(this.player1.isColor()){
-                if(!player1.canReachDestination(rO, cO, rD, cD, this.board))return;
-                if(this.isKingOfMovingThreatened(this.player2.getPieces(), 
+                if(!player1.canReachDestination(rO, cO, rD, cD, this.board)){
+                    this.protMngr.sendFromServerToClient("E Piece can't do this movement");
+                    return;
+                }/*
+                if(this.isKingOfMovingThreatened(this.player2, 
                         this.player1.getPieces().get("king"), this.getBoard(),
-                        new int[]{rO, cO, rD, cD}))
+                        new int[]{rO, cO, rD, cD})){
+                    this.protMngr.sendFromServerToClient("E King is Checked");
                     return;
+                }*/
+                    
             }else{
-                if(!player2.canReachDestination(rO, cO, rD, cD, this.board))return;
-                if(this.isKingOfMovingThreatened(this.player1.getPieces(), 
-                        this.player2.getPieces().get("king"), this.getBoard(),
-                        new int[]{rO, cO, rD, cD}))
+                if(!player2.canReachDestination(rO, cO, rD, cD, this.board)){
+                    this.protMngr.sendFromServerToClient("E Piece can't do this movement");
                     return;
+                }/*
+                if(this.isKingOfMovingThreatened(this.player1, 
+                        this.player2.getPieces().get("king"), this.getBoard(),
+                        new int[]{rO, cO, rD, cD})){
+                    this.protMngr.sendFromServerToClient("E King is Checked");
+                    return;
+                }*/
+                    
             }                
         }else{
             if(this.player1.isColor()){
-                if(!player2.canReachDestination(rO, cO, rD, cD, this.board))return;
-                if(this.isKingOfMovingThreatened(this.player1.getPieces(), 
+                if(!player2.canReachDestination(rO, cO, rD, cD, this.board)){
+                    this.protMngr.sendFromServerToClient("E Piece can't do this movement");
+                    return;
+                }/*
+                if(this.isKingOfMovingThreatened(this.player1, 
                         this.player2.getPieces().get("king"), this.getBoard(),
-                        new int[]{rO, cO, rD, cD}))
+                        new int[]{rO, cO, rD, cD})){
+                    this.protMngr.sendFromServerToClient("E King is Checked");
                     return;
+                }*/
+                    
             }else{
-                if(!player1.canReachDestination(rO, cO, rD, cD, this.board))return;
-                if(this.isKingOfMovingThreatened(this.player2.getPieces(), 
-                        this.player1.getPieces().get("king"), this.getBoard(),
-                        new int[]{rO, cO, rD, cD}))
+                if(!player1.canReachDestination(rO, cO, rD, cD, this.board)){
+                    this.protMngr.sendFromServerToClient("E Piece can't do this movement");
                     return;
+                }/*
+                if(this.isKingOfMovingThreatened(this.player2, 
+                        this.player1.getPieces().get("king"), this.getBoard(),
+                        new int[]{rO, cO, rD, cD})){
+                    this.protMngr.sendFromServerToClient("E King is Checked");
+                    return;
+                }*/
+                    
             }
         }
         
@@ -201,7 +225,7 @@ public class Game {
 
     }
     
-    private boolean isKingOfMovingThreatened(HashMap<String,Piece> opPieces, Piece currKing, ChessBoard board, int[] move){
+    private boolean isKingOfMovingThreatened(Player opPlayer, Piece currKing, ChessBoard board, int[] move){
         int rO = move[0];
         int cO = move[1];
         int rD = move[2];
@@ -216,12 +240,11 @@ public class Game {
         phantom.setCurr_col(cD);
         board.getSquares()[rD][cD].setPiece(phantom);
         
-        for (HashMap.Entry<String, Piece> entry : opPieces.entrySet()){
+        for (HashMap.Entry<String, Piece> entry : opPlayer.getPieces().entrySet()){
              Piece opPiece = (Piece)entry.getValue();
              if(opPiece!=null)
-                if(opPiece.isPieceMovement(opPiece.getCurr_row(), opPiece.getCurr_col(),
-                        k_row, k_col, this.board) && opPiece.isPathFree(opPiece.getCurr_row(), 
-                        opPiece.getCurr_col(),k_row, k_col, board))
+                if(opPlayer.canReachDestination(opPiece.getCurr_row(), opPiece.getCurr_col(),
+                        k_row, k_col, this.board))
                     board.getSquares()[rD][cD].removePiece();
                     board.getSquares()[rO][cO].setPiece(pieceToMove);
                     return true;

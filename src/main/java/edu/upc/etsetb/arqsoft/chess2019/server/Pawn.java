@@ -18,24 +18,25 @@ public class Pawn extends Piece{
     }
 
     public boolean isPieceMovement(int rO, int cO, int rD, int cD, ChessBoard board){
-        int arm = abs(rO-rD);
-        int acm = abs(cO-cD);
+        int rm = rD-rO;
+        int cm = cD-cO;
 
-        if(!(rO-1<=arm && arm<=8-rO && cO-1<=acm && acm<=8-cO && (arm+acm!=0))) return false;
+        if(!(rO+rm <= 8 && rO+rm >= 1 && cO+cm <= 8 && cO+cm >= 1 && (abs(rm)+abs(cm)!=0)))
+            return false;
         
         if(!this.isColor()){
-            int rm = rD-rO;
-            int cm = cD-cO;
+            rm = rD-rO;
+            cm = cD-cO;
             if(this.isInInitialPos()){
                 if(!((rm==1 || rm==2) && cm==0))
-                    if(!(rm==1 && acm==1))
+                    if(!(rm==1 && abs(cm)==1))
                         return false;
                     else
                         if(board.getSquares()[rD][cD].getPiece()==null)
                             return false;
             }else{
                 if(!(rm==1 && cm==0))
-                    if(!(rm==1 && acm==1))
+                    if(!(rm==1 && abs(cm)==1))
                         return false;
                     else
                         if(board.getSquares()[rD][cD].getPiece()==null)
@@ -43,18 +44,18 @@ public class Pawn extends Piece{
                             return false;
             }
         }else{
-            int rm = rO-rD;
-            int cm = cO-cD;
+            rm = rO-rD;
+            cm = cO-cD;
             if(this.isInInitialPos()){
                 if(!((rm==1 || rm==2) && cm==0))
-                    if(!(rm==1 && acm==1))
+                    if(!(rm==1 && abs(cm)==1))
                         return false;
                     else
                         if(board.getSquares()[rD][cD].getPiece()==null)
                             return false;
             }else{
                 if(!(rm==1 && cm==0))
-                    if(!(rm==1 && acm==1))
+                    if(!(rm==1 && abs(cm)==1))
                         return false;
                     else
                         if(board.getSquares()[rD][cD].getPiece()==null)
@@ -69,11 +70,11 @@ public class Pawn extends Piece{
     public boolean isPathFree(int rO, int cO, int rD, int cD, ChessBoard board){
         if(!this.isColor()){
             int rm = rD-rO;
-            if(this.isInInitialPos() && rm==2 && board.getSquares()[rO+1][cO]!=null)
+            if(this.isInInitialPos() && rm==2 && board.getSquares()[rO+1][cO].getPiece()!=null)
                 return false;
         }else{
             int rm = rO-rD;
-            if(this.isInInitialPos() && rm==2 && board.getSquares()[rO-1][cO]!=null)
+            if(this.isInInitialPos() && rm==2 && board.getSquares()[rO-1][cO].getPiece()!=null)
                 return false;
         }
         return true;

@@ -76,8 +76,10 @@ public class Player {
     
     public boolean canReachDestination(int rO, int cO, int rD, int cD, ChessBoard board){
         Piece oPiece = board.getSquares()[rO][cO].getPiece();
-        if(!oPiece.isPieceMovement(rO, cO, rD, cD, board)) return false;
-        if(!oPiece.isPathFree(rO, cO, rD, cD, board)) return false;
+        if(!oPiece.isPieceMovement(rO, cO, rD, cD, board))
+            return false;
+        if(!oPiece.isPathFree(rO, cO, rD, cD, board))
+            return false;
         return true;
     }
 
