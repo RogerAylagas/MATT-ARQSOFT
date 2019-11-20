@@ -16,12 +16,13 @@ public class Pawn extends Piece{
     public Pawn(int init_row, int init_col, boolean color) {
         super(init_row, init_col, color);
     }
-
+    @Override
     public boolean isPieceMovement(int rO, int cO, int rD, int cD, ChessBoard board){
         int rm = rD-rO;
         int cm = cD-cO;
-
-        if(!(rO+rm <= 8 && rO+rm >= 1 && cO+cm <= 8 && cO+cm >= 1 && (abs(rm)+abs(cm)!=0)))
+        
+        
+        if(!(rO+rm <= 7 && rO+rm >= 0 && cO+cm <= 7 && cO+cm >= 0 && (abs(rm)+abs(cm)!=0)))
             return false;
         
         if(!this.isColor()){
@@ -66,7 +67,7 @@ public class Pawn extends Piece{
         
         return true;
     }
-    
+    @Override
     public boolean isPathFree(int rO, int cO, int rD, int cD, ChessBoard board){
         if(!this.isColor()){
             int rm = rD-rO;

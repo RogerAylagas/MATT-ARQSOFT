@@ -70,12 +70,12 @@ public class Player {
             Piece piece = (Piece)entry.getValue();
             int row = piece.getInit_row();
             int col = piece.getInit_col();
-            board.getSquares()[row][col].setPiece(piece);
+            board.setPiece(row,col,piece);
         }
     }
     
     public boolean canReachDestination(int rO, int cO, int rD, int cD, ChessBoard board){
-        Piece oPiece = board.getSquares()[rO][cO].getPiece();
+        Piece oPiece = board.getPiece(rO,cO);
         if(!oPiece.isPieceMovement(rO, cO, rD, cD, board))
             return false;
         if(!oPiece.isPathFree(rO, cO, rD, cD, board))

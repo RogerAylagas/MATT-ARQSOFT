@@ -19,7 +19,7 @@ public class Bishop extends Piece{
         super(init_row, init_col, color);
         this.side = side;
     }
-    
+    @Override
     public boolean isPieceMovement(int rO, int cO, int rD, int cD, ChessBoard board){
         int rm = abs(rO-rD);
         int cm = abs(cO-cD);
@@ -31,6 +31,7 @@ public class Bishop extends Piece{
             return true;
         }     
     }
+    @Override
     public boolean isPathFree(int rO, int cO, int rD, int cD, ChessBoard board){
         if(rD>rO){
            for (int rc = rO; rc == rD; ++rc) {

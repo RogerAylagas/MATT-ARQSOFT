@@ -28,6 +28,18 @@ public class ChessBoard {
             }
         }
     }
+    
+    public void setPiece(int row, int col, Piece piece) {
+        this.squares[row][col].setPiece(piece);
+    }
+    
+    public Piece getPiece(int row, int col){
+        return this.squares[row][col].getPiece();
+    }
+    
+    public void removePiece(int row, int col){
+        this.squares[row][col].removePiece();
+    }
 
     public Square[][] getSquares() {
         return squares;

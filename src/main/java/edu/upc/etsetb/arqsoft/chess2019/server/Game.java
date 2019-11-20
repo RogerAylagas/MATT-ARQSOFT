@@ -70,13 +70,12 @@ public class Game {
         cO = cO-1;
         rD = rD-1;
         cD = cD-1;
-        Piece oPiece = this.board.getSquares()[rO][cO].getPiece();
+        Piece oPiece = this.board.getPiece(rO, cO);
         if(oPiece == null || (oPiece.isColor()!=this.playingColor) ){
             this.protMngr.sendFromServerToClient("E Select a piece of your color");
             return;
         }
-        Piece dPiece = this.board.getSquares()[rD][cD].getPiece();
-        
+        Piece dPiece = this.board.getPiece(rD, cD);
         if(dPiece != null && (dPiece.isColor()==this.playingColor)){
             this.protMngr.sendFromServerToClient("E Select a valid destination square");
             return;
@@ -137,12 +136,11 @@ public class Game {
         }
         
         //If opponent piece is in destination
-        if(this.board.getSquares()[rD][cD].getPiece()!=null){
-
-            this.board.getSquares()[rD][cD].removePiece();
-            Piece movingPiece = this.board.getSquares()[rO][cO].getPiece();
-            this.board.getSquares()[rO][cO].removePiece();
-            this.board.getSquares()[rD][cD].setPiece(movingPiece);
+        if(this.board.getPiece(rD, cD)!=null){
+            this.board.removePiece(rD, cD);
+            Piece movingPiece = this.board.getPiece(rO, cO);
+            this.board.removePiece(rO, cO);
+            this.board.setPiece(rD, cD, movingPiece);
 
             if(movingPiece.isColor()==player1.isColor()){
                 for (HashMap.Entry<String, Piece> entry : player1.getPieces().entrySet()) {
@@ -174,10 +172,10 @@ public class Game {
                 }
             }
         }else{
-            this.board.getSquares()[rD][cD].removePiece();
-            Piece movingPiece = this.board.getSquares()[rO][cO].getPiece();
-            this.board.getSquares()[rO][cO].removePiece();
-            this.board.getSquares()[rD][cD].setPiece(movingPiece);
+            this.board.removePiece(rD, cD);
+            Piece movingPiece = this.board.getPiece(rO, cO);
+            this.board.removePiece(rO, cO);
+            this.board.setPiece(rD, cD, movingPiece);
 
             if(movingPiece.isColor()==player1.isColor()){
                 for (HashMap.Entry<String, Piece> entry : player1.getPieces().entrySet()) {
@@ -233,25 +231,25 @@ public class Game {
         int k_row = currKing.getCurr_row();
         int k_col = currKing.getCurr_col();
 
-        Piece pieceToMove = board.getSquares()[rO][cO].getPiece();
-        board.getSquares()[rO][cO].removePiece();
+        Piece pieceToMove = board.getPiece(rO, cO);
+        board.removePiece(rO, cO);
         Piece phantom = pieceToMove;
         phantom.setCurr_row(rD);
         phantom.setCurr_col(cD);
-        board.getSquares()[rD][cD].setPiece(phantom);
+        board.setPiece(rD, cD, phantom);
         
         for (HashMap.Entry<String, Piece> entry : opPlayer.getPieces().entrySet()){
              Piece opPiece = (Piece)entry.getValue();
              if(opPiece!=null)
                 if(opPlayer.canReachDestination(opPiece.getCurr_row(), opPiece.getCurr_col(),
                         k_row, k_col, this.board))
-                    board.getSquares()[rD][cD].removePiece();
-                    board.getSquares()[rO][cO].setPiece(pieceToMove);
+                    board.removePiece(rD, cD);
+                    board.setPiece(rO, cO, pieceToMove);
                     return true;
         }
 
-        board.getSquares()[rD][cD].removePiece();
-        board.getSquares()[rO][cO].setPiece(pieceToMove);
+        board.removePiece(rD, cD);
+        board.setPiece(rO, cO, pieceToMove);
         return false;
     }
 
