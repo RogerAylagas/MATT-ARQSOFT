@@ -76,7 +76,9 @@ public abstract class Client {
         this.clNetworkAdap = new ClientNetworkAdapter() ;
         
         this.clientProtMngr = new ClientProtocolMngr(this) ;
+        this.clientProtMngr.setNetworkA(this.clNetworkAdap);
         this.clNetworkAdap.setClientProtocolMngr(clientProtMngr);
+        
         
         this.servNetworkAdap = new ServerNetworkAdapter() ;
         this.servNetworkAdap.setClNetworkAdap(this.clNetworkAdap);
