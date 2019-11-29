@@ -31,39 +31,4 @@ public class DataManager {
             e.printStackTrace();
         }
     }
-
-    public FileWriter getWriter() {
-        return writer;
-    }
-
-    public FileReader getReader() {
-        return reader;
-    }
-
-    public void setWriter(FileWriter writer) {
-        this.writer = writer;
-    }
-
-    public void setReader(FileReader reader) {
-        this.reader = reader;
-    }
-    
-    /**
-     * Get the value of fileName
-     *
-     * @return the value of fileName
-     */
-    public String getFileName() {
-        return fileName;
-    }
-
-    /**
-     * Set the value of fileName
-     *
-     * @param fileName new value of fileName
-     */
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
 }

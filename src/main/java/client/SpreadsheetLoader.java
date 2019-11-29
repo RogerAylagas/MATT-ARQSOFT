@@ -7,15 +7,8 @@ package client;
 
 /**
  *
- * @author Roger Aylagas Torres
+ * @author roger
  */
-public class Cell {
+public class SpreadsheetLoader {
     
-    private String content;
-    private String value;
-
-    public Cell() {
-        this.content = "";
-        this.value = "";
-    }
 }
