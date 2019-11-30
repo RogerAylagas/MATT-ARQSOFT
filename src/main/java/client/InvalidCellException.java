@@ -9,13 +9,9 @@ package client;
  *
  * @author roger
  */
-public class Calc {
+public class InvalidCellException extends Exception{
 
-    int solveEq(String input, Cell[][] cells) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    void recomputeCells(String row, String col, Cell[][] cells) {
+    InvalidCellException(String e_Specified_Row_or_Column_are_not_correct) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

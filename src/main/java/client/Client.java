@@ -10,5 +10,19 @@ package client;
  * @author roger
  */
 public class Client {
+    private ProtocolManager protocolManager;
+    private TextUI textUI;
     
+    public void displaySpreadsheetMenu(){
+        String menu = this.protocolManager.displaySpreadsheetMenu();
+        this.textUI.displayInfo(menu);
+    }
+    
+    public String requestMenuOption(){
+        return this.textUI.requestMenuOption();
+    }
+    
+    public void interpretNewCommand(String command) {
+       this.protocolManager.interpretNewCommand(command);
+    }
 }

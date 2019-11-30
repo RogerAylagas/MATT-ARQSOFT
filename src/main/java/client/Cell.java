@@ -18,4 +18,22 @@ public class Cell {
         this.content = "";
         this.value = "";
     }
+
+    public void setValueToNull() {
+        this.value = null;
+    }
+
+    public void setContent(String input) {
+        this.content = input;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+    
+    
 }

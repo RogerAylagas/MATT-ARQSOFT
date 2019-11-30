@@ -10,5 +10,13 @@ package client;
  * @author roger
  */
 public class TextUI {
+
+    void displayInfo(String menu) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    String requestMenuOption() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }
