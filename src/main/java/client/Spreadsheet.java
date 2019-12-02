@@ -5,6 +5,7 @@
  */
 package client;
 
+import static java.lang.Integer.max;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -22,62 +23,65 @@ public class Spreadsheet {
     private Cell[][] cells;
     private DataManager dataManager;
     private Calc calc;
-    private int numRows;
-    private int numCols;
+    private int numCells;
 
     public Spreadsheet(String name, String folder) {
-        int n_cells = 3;
-        this.numRows = n_cells;
-        this.numCols = n_cells;
+        this.numCells = 3;
         // TODO: Define menu
         this.menu = "";
         this.name = name;
         this.folder = folder;
         this.dataManager = new DataManager(this.name, this.folder);
         this.libraries = new ArrayList<Library>();
-        this.cells = new Cell[n_cells][n_cells];
+        this.cells = new Cell[this.numCells][this.numCells];
         this.calc = new Calc();
     }
 
     public void edit(String row, String col, String input) throws InvalidCellException {
-        if(!this.isValidCell(row, col))
+        try{
+           int r = Integer.parseInt(row)-1;
+           int c = Integer.parseInt(col)-1; 
+           
+           if(!this.isValidCell(r, c))
             return;
         
-        if(this.isEquation(input)){
-            int result = this.calc.solveEq(input, this.cells);
-            this.cells[row][col].setValue(Integer.toString(result));
-            this.calc.recomputeCells(row,col,this.cells);
-        }else{
-            this.cells[row][col].setValueToNull();
+            if(this.isEquation(input)){
+                int result = this.calc.solveEq(input, this.cells);
+                this.cells[r][c].setValue(Integer.toString(result));
+                this.calc.recomputeCells(row,col,this.cells);
+            }else{
+                this.cells[r][c].setValueToNull();
+            }
+            this.cells[r][c].setContent(input);
+        }catch(NumberFormatException e){
+            throw new InvalidCellException("E Specified Row or Column are not correct");
         }
-        this.cells[row][col].setContent(input);
+        
+        
     }
     
-    public boolean isValidCell(String row, String col) throws InvalidCellException{
-        //TODO: control exception of parseInt()
-        int r = Integer.parseInt(row)-1;
-        int c = Integer.parseInt(col)-1;
-        if(!(r>0 && c>0)){
-            if(r>this.numRows){
-                if(c>this.numCols){
-                    // TODO: Extend cells
-                    for(int idx=0; idx<this.numRows; ++idx){
-                        Arrays.copyOf(this.cells[idx], c);
-                    }
-                    
-                        
-                }
+    public boolean isValidCell(int row, int col) throws InvalidCellException{
+        if(row>0 && col>0){
+            if(row>this.numCells || col>this.numCells){
+                this.extendSpreadsheet(max(row,col));                            
             }
             return true;
         }else{
             throw new InvalidCellException("E Specified Row or Column are not correct");
-            return false;
-        }
+        } 
     }
 
     private boolean isEquation(String input) {
         if(input.charAt(0)=='=') return true;
         else return false;
+    }
+
+    private void extendSpreadsheet(int newDim) {
+        Cell[][] newCells = new Cell[newDim][newDim];
+        for (int r = 0; r < this.numCells; ++r) {
+            System.arraycopy(this.cells[r], 0, newCells[r], 0, this.numCells);
+        }
+        this.cells = Arrays.copyOf(newCells, newDim);
     }
     
 }
