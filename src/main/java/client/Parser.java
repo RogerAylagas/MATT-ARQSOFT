@@ -21,7 +21,8 @@ public class Parser {
                 String possibleLinkedCell = Character.toString(equation.charAt(i));
                 int j = i+1;
                 while(Character.isUpperCase(equation.charAt(j)) ||
-                        Character.isDigit(equation.charAt(j))){
+                        Character.isDigit(equation.charAt(j)) ||
+                        Character.toString(equation.charAt(j)).equals(":")){
                     possibleLinkedCell.concat(Character.toString(equation.charAt(j)));
                     ++j;
                 }
@@ -33,7 +34,29 @@ public class Parser {
     }
 
     ArrayList<String> identifyFormulas(String equation) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<String> formulas = new ArrayList<String>();
+        int len = equation.length();
+        for(int i = 0; i <= len; i++){
+            if(Character.isUpperCase(equation.charAt(i))){
+                String possibleFormula = Character.toString(equation.charAt(i));
+                int j = i+1;
+                while(Character.isUpperCase(equation.charAt(j)) ||
+                        Character.isDigit(equation.charAt(j))){
+                    possibleFormula.concat(Character.toString(equation.charAt(j)));
+                    ++j;
+                }
+                if(Character.toString(equation.charAt(j)).equals("(")){
+                    while(!Character.toString(equation.charAt(j)).equals(")")){
+                        possibleFormula.concat(Character.toString(equation.charAt(j)));
+                        ++j; 
+                    }
+                    possibleFormula.concat(Character.toString(equation.charAt(j)));
+                    formulas.add(possibleFormula);
+                }
+                    
+            }
+        }
+        return formulas;
     }
 
     String shuntingYardAlgorithm(String equation) {
