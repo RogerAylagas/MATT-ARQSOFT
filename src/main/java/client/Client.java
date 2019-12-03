@@ -25,4 +25,8 @@ public class Client {
     public void interpretNewCommand(String command) {
        this.protocolManager.interpretNewCommand(command);
     }
+
+    void sendError(String toString) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

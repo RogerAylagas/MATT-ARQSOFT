@@ -15,8 +15,6 @@ import java.util.HashMap;
  * @author Roger Aylagas Torres
  */
 public class Spreadsheet {
-    
-    private String menu;
     private String name;
     private String folder;
     private ArrayList<Library> libraries;
@@ -28,7 +26,6 @@ public class Spreadsheet {
     public Spreadsheet(String name, String folder) {
         this.numCells = 3;
         // TODO: Define menu
-        this.menu = "";
         this.name = name;
         this.folder = folder;
         this.dataManager = new DataManager(this.name, this.folder);
@@ -39,11 +36,12 @@ public class Spreadsheet {
 
     public void edit(String row, String col, String input) throws InvalidCellException {
         try{
-           int r = Integer.parseInt(row)-1;
-           int c = Integer.parseInt(col)-1; 
+            int r = Integer.parseInt(row)-1;
+            int c = Integer.parseInt(col)-1; 
            
-           if(!this.isValidCell(r, c))
-            return;
+            if(!this.isValidCell(r, c)){
+                throw new InvalidCellException("E Specified Row or Column are not correct");
+            }             
         
             if(this.isEquation(input)){
                 int result = this.calc.solveEq(input, this.cells);

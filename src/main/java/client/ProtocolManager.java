@@ -10,7 +10,7 @@ package client;
  * @author roger
  */
 public class ProtocolManager {
-    
+    private Client client;
     private SpreadsheetManager spreadsheetManager;
     
     public String displaySpreadsheetMenu() {
@@ -22,7 +22,11 @@ public class ProtocolManager {
         switch(split[0]){
             case "e":
                 String[] parsedCommand = split[1].split(",");
-                this.spreadsheetManager.edit(split[1], split[2], split[3]);
+                try{
+                    this.spreadsheetManager.edit(split[1], split[2], split[3]);
+                }catch(InvalidCellException e){
+                    client.sendError(e.toString());    
+                }
         }
     }
 
