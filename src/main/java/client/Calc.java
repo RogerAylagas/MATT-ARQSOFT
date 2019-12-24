@@ -17,8 +17,9 @@ import java.util.ListIterator;
  */
 public class Calc {
     private Parser parser;
+    private BasicLib basicLib;
 
-    int solveEq(String eq, Cell[][] cells) throws InvalidSyntaxException, InvalidCellValueException {
+    int solveEq(String eq, Cell[][] cells) throws InvalidSyntaxException, InvalidCellValueException, InvalidFormulaException {
         String equation = eq;
         
         ArrayList<String> linkedCells = parser.identifyLinkedCells(equation);
@@ -26,7 +27,7 @@ public class Calc {
             equation = this.replaceLinkedByValue(equation, cells, linkedCells);
         ArrayList<String> formulas = parser.identifyFormulas(equation); 
         if(!formulas.isEmpty())
-            equation = this.computeFromulas(equation, formulas);
+            equation = this.computeFromulas(equation, cells, formulas);
         ArrayList<String> sya = parser.shuntingYardAlgorithm(equation);
         int result = this.computeFinalResult(sya);
         return result;
@@ -52,8 +53,43 @@ public class Calc {
         return equation;
     }
 
-    private String computeFromulas(String equation, ArrayList<String> formulas) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private String computeFromulas(String equation,Cell[][] cells, ArrayList<String> formulas) throws InvalidFormulaException {
+        ListIterator<String> it = formulas.listIterator();
+        String eq = equation;
+        String formula;
+        float res;
+        String result;
+        
+        while(it.hasNext()){
+            formula = it.next();
+            String[] split = formula.split("\\(");
+            Operation op = this.basicLib.getOperation(split[0]);
+            String[] args = split[1].split("\\)")[0].split(",");
+            if (op != null){
+                if(args.length == 1){
+                    int[] coords = this.convertStringToRange(args[0]);
+                    int nRows = coords[3]-coords[1]+1;
+                    int nCols = coords[2]-coords[0]+1;
+                    float[] values = new float[nRows*nCols];
+                    for (int i = coords[1]; i <= coords[3]; i++) {
+                        for (int j = coords[0]; j <= coords[2]; j++) {
+                            values[(i-coords[1])*nRows+j-coords[0]] = Float.parseFloat(cells[i][j].getValue());
+                        }
+                    }
+                    res = op.compute(values);
+                    eq.replace(formula, Float.toString(res));
+                }else if (args.length == 2){
+                    int[] coords1 = this.convertStringToCell(args[0]);
+                    int[] coords2 = this.convertStringToCell(args[1]);
+                    float op1 = Float.parseFloat(cells[coords1[1]][coords1[0]].getValue());
+                    float op2 = Float.parseFloat(cells[coords2[1]][coords2[0]].getValue());
+                    res = op.compute(op1, op2);
+                    eq.replace(formula, Float.toString(res));
+                }else throw new InvalidFormulaException();
+            }
+            else throw new InvalidFormulaException();
+        }
+        return eq;
     }
 
     private int computeFinalResult(ArrayList<String> sya) {
@@ -72,12 +108,17 @@ public class Calc {
         CharacterIterator cit = new StringCharacterIterator(col);
         int c = 0;
         while (cit.current() != CharacterIterator.DONE) {
-            char symbol = it.current();
             c += ((int)cit.current() % 32)*(int)pow((double)26,(double)(cit.getEndIndex()-cit.getIndex()));
         }
         int r = Integer.parseInt(row);
         int[] coordinates = new int[]{r,c};
         return coordinates;
+    }
+    private int[] convertStringToRange(String range){
+        String[] cells = range.split(":");
+        int[] initCoords = this.convertStringToCell(cells[0]);
+        int[] finCoords = this.convertStringToCell(cells[1]);
+        return new int[]{initCoords[0],initCoords[1],finCoords[0],finCoords[1]};
     }
 
 

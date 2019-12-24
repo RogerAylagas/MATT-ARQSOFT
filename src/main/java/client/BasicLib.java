@@ -6,6 +6,8 @@
 package client;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -13,47 +15,18 @@ import java.util.Arrays;
  * @author roger
  */
 public class BasicLib extends Library{
-
+    HashMap<String,Operation> operations;
+    
     public BasicLib() {
+        this.operations = new HashMap<String, Operation>();
+        operations.put("SUM", new Sum());
+        operations.put("MIN", new Min());
+        operations.put("MAX", new Max());
+        operations.put("AVERAGE", new Average());
+    } 
+
+    Operation getOperation(String operation) {
+        return this.operations.get(operation);
     }
-    
-    //TODO: Add required operations
-    public float suma(float a, float b){
-        return a+b;
-    }
-    
-    public float suma(float[] nums){
-        float res = 0;
-        for (int i = 0; i < nums.length; ++i) {
-            res += nums[i];
-        }
-        return res;
-    }
-    
-    public float max(float[] nums){
-        Arrays.sort(nums);
-        return nums[nums.length-1];
-    }
-    public float max(float a, float b){
-        if(a>b) return a;
-        else return b;
-    }
-    
-    public float min(float a, float b){
-        if(a<b) return a;
-        else return b;
-    }
-    
-    public float min(float[] nums){
-        Arrays.sort(nums);
-        return nums[0];
-    }
-    
-    public float promedio(float a, float b){
-        return (float)(a+b)/2;
-    }
-    
-    public float promedio(float[] nums){
-        return (float)this.suma(nums)/nums.length;
-    }
+
 }
