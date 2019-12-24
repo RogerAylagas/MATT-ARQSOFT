@@ -24,9 +24,6 @@ public class Parser {
             if(Character.isUpperCase(equation.charAt(i))){
                 String possibleLinkedCell = Character.toString(equation.charAt(i));
                 int j = i+1;
-                char c = equation.charAt(j);
-                boolean u = Character.isUpperCase(equation.charAt(j));
-                boolean d = Character.isDigit(equation.charAt(j));
                 while(j<len && (Character.isUpperCase(equation.charAt(j)) ||
                         Character.isDigit(equation.charAt(j)) ||
                         Character.toString(equation.charAt(j)).equals(":"))){
