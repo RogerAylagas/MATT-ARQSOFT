@@ -8,7 +8,6 @@ package client;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.ListIterator;
 
 /**
@@ -18,7 +17,7 @@ import java.util.ListIterator;
 public class Parser {
 
     public ArrayList<String> identifyLinkedCells(String equation) {
-        ArrayList<String> linkedCells = new ArrayList<String>();
+        ArrayList<String> linkedCells = new ArrayList();
         int len = equation.length();
         for(int i = 0; i < len; i++){
             if(Character.isUpperCase(equation.charAt(i))){
