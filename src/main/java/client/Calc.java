@@ -125,13 +125,15 @@ public class Calc {
         String row = "";
         while (it.current() != CharacterIterator.DONE) {
             char symbol = it.current();
-            if(Character.isAlphabetic(symbol)) col.concat(Character.toString(symbol));
-            else row.concat(Character.toString(symbol));
+            if(Character.isAlphabetic(symbol)) col = col.concat(Character.toString(symbol));
+            else row = row.concat(Character.toString(symbol));
+            it.next();
         }
         CharacterIterator cit = new StringCharacterIterator(col);
         int c = 0;
         while (cit.current() != CharacterIterator.DONE) {
             c += ((int)cit.current() % 32)*(int)pow((double)26,(double)(cit.getEndIndex()-cit.getIndex()));
+            cit.next();
         }
         int r = Integer.parseInt(row);
         int[] coordinates = new int[]{r,c};
