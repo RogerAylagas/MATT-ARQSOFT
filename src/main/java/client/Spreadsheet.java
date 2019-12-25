@@ -34,7 +34,7 @@ public class Spreadsheet {
         this.calc = new Calc();
     }
 
-    public void edit(String row, String col, String input) throws InvalidCellException {
+    public void edit(String row, String col, String input) throws InvalidCellException, InvalidSyntaxException, InvalidCellValueException, InvalidFormulaException {
         try{
             int r = Integer.parseInt(row)-1;
             int c = Integer.parseInt(col)-1; 
@@ -44,8 +44,8 @@ public class Spreadsheet {
             }             
         
             if(this.isEquation(input)){
-                int result = this.calc.solveEq(input, this.cells);
-                this.cells[r][c].setValue(Integer.toString(result));
+                String result = this.calc.solveEq(input, this.cells);
+                this.cells[r][c].setValue(result);
                 this.calc.recomputeCells(row,col,this.cells);
             }else{
                 this.cells[r][c].setValueToNull();

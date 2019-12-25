@@ -19,9 +19,8 @@ public class Calc {
     private Parser parser;
     private BasicLib basicLib;
 
-    int solveEq(String eq, Cell[][] cells) throws InvalidSyntaxException, InvalidCellValueException, InvalidFormulaException {
+    String solveEq(String eq, Cell[][] cells) throws InvalidSyntaxException, InvalidCellValueException, InvalidFormulaException {
         String equation = eq;
-        
         ArrayList<String> linkedCells = parser.identifyLinkedCells(equation);
         if(!linkedCells.isEmpty())
             equation = this.replaceLinkedByValue(equation, cells, linkedCells);
@@ -29,7 +28,7 @@ public class Calc {
         if(!formulas.isEmpty())
             equation = this.computeFromulas(equation, cells, formulas);
         ArrayList<String> sya = parser.shuntingYardAlgorithm(equation);
-        int result = this.computeFinalResult(sya);
+        String result = this.computeFinalResult(sya);
         return result;
     }
 
@@ -58,7 +57,6 @@ public class Calc {
         String eq = equation;
         String formula;
         float res;
-        String result;
         
         while(it.hasNext()){
             formula = it.next();
@@ -78,6 +76,7 @@ public class Calc {
                     }
                     res = op.compute(values);
                     eq.replace(formula, Float.toString(res));
+                    
                 }else if (args.length == 2){
                     int[] coords1 = this.convertStringToCell(args[0]);
                     int[] coords2 = this.convertStringToCell(args[1]);
@@ -85,6 +84,7 @@ public class Calc {
                     float op2 = Float.parseFloat(cells[coords2[1]][coords2[0]].getValue());
                     res = op.compute(op1, op2);
                     eq.replace(formula, Float.toString(res));
+                    
                 }else throw new InvalidFormulaException();
             }
             else throw new InvalidFormulaException();
@@ -92,8 +92,31 @@ public class Calc {
         return eq;
     }
 
-    private int computeFinalResult(ArrayList<String> sya) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private String computeFinalResult(ArrayList<String> sya) throws InvalidSyntaxException {
+        ListIterator<String> it = sya.listIterator();
+        String operators = "*/+-";
+        float op1;
+        float op2;
+        float res;
+        int prevIdx, currIdx, nextIdx;
+        
+        while(it.hasNext()){
+            if(operators.contains(sya.get(it.nextIndex()))){
+                prevIdx = it.previousIndex();
+                currIdx = prevIdx+1;
+                nextIdx = it.nextIndex();
+                op1 = Float.parseFloat(sya.get(prevIdx));
+                op2 = Float.parseFloat(sya.get(currIdx));
+                res = operate(op1,op2, sya.get(nextIdx));
+                sya.set(prevIdx, Float.toString(res));
+                it.previous();
+                sya.remove(currIdx);
+                sya.remove(nextIdx);                
+            }else{
+                it.next();
+            }
+        }
+        return sya.get(0);
     }
 
     private int[] convertStringToCell(String cell) {
@@ -114,12 +137,36 @@ public class Calc {
         int[] coordinates = new int[]{r,c};
         return coordinates;
     }
+    
     private int[] convertStringToRange(String range){
         String[] cells = range.split(":");
         int[] initCoords = this.convertStringToCell(cells[0]);
         int[] finCoords = this.convertStringToCell(cells[1]);
         return new int[]{initCoords[0],initCoords[1],finCoords[0],finCoords[1]};
     }
+
+    private float operate(float op1, float op2, String op) throws InvalidSyntaxException {
+        float res;
+        switch(op){
+            case "+":
+                res = op1+op2;
+                break;
+            case "-":
+                res = op1-op2;
+                break;
+            case "*":
+                res = op1*op2;
+                break;
+            case "/":
+                res = op1/op2;
+                break;
+            default:
+                throw new InvalidSyntaxException();
+                
+        }
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 
 
 
