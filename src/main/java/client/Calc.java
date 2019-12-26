@@ -19,7 +19,12 @@ public class Calc {
     private Parser parser;
     private BasicLib basicLib;
 
-    String solveEq(String eq, Cell[][] cells) throws InvalidSyntaxException, InvalidCellValueException, InvalidFormulaException {
+    public Calc() {
+        this.parser = new Parser();
+        this.basicLib = new BasicLib();
+    }
+    
+    public String solveEq(String eq, Cell[][] cells) throws InvalidSyntaxException, InvalidCellValueException, InvalidFormulaException {
         String equation = eq;
         ArrayList<String> linkedCells = parser.identifyLinkedCells(equation);
         if(!linkedCells.isEmpty())
@@ -44,7 +49,7 @@ public class Calc {
             linkedCell = it.next();
             coordinates = convertStringToCell(linkedCell);
             try{
-                equation.replace(linkedCell, cells[coordinates[0]][coordinates[1]].getValue());
+                equation = equation.replace(linkedCell, cells[coordinates[0]][coordinates[1]].getValue());
             }catch(Exception e){
                 throw new InvalidCellValueException();
             }

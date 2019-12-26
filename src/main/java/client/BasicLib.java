@@ -25,7 +25,7 @@ public class BasicLib extends Library{
         operations.put("AVERAGE", new Average());
     } 
 
-    Operation getOperation(String operation) {
+    public Operation getOperation(String operation) {
         return this.operations.get(operation);
     }
 

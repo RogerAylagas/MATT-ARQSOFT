@@ -22,7 +22,7 @@ public class SpreadsheetManager {
         return this.menu;
     }
 
-    public void edit(String row, String col, String input) throws InvalidCellException {
+    public void edit(String row, String col, String input) throws InvalidCellException, InvalidSyntaxException, InvalidCellValueException, InvalidFormulaException {
         this.currSpreadsheet.edit(row,col,input);
     }
 
