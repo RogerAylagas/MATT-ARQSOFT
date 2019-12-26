@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package client;
+package client.exceptions;
 
 /**
  *
  * @author roger
  */
-public class InvalidFormulaException extends Exception {
+public class InvalidOperationException extends Exception {
 
-    public InvalidFormulaException() {
+    public InvalidOperationException() {
     }
     
 }

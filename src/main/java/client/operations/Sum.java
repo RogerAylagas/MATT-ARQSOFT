@@ -3,26 +3,29 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package client;
-
-import java.util.Arrays;
+package client.operations;
 
 /**
  *
  * @author roger
  */
-public class Min implements Operation{
+public class Sum implements Operation{
+
+    public Sum() {
+    }
 
     @Override
     public float compute(float a, float b) {
-        if(a<b) return a;
-        else return b;
+        return a+b;
     }
 
     @Override
     public float compute(float[] nums) {
-        Arrays.sort(nums);
-        return nums[0];
+        float res = 0;
+        for (int i = 0; i < nums.length; ++i) {
+            res += nums[i];
+        }
+        return res;
     }
     
 }

@@ -5,6 +5,12 @@
  */
 package client;
 
+import client.exceptions.InvalidOperationException;
+import client.libraries.BasicLib;
+import client.exceptions.InvalidSyntaxException;
+import client.exceptions.InvalidFormulaException;
+import client.exceptions.InvalidCellValueException;
+import client.operations.Operation;
 import static java.lang.Math.pow;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
@@ -24,7 +30,7 @@ public class Calc {
         this.basicLib = new BasicLib();
     }
     
-    public String solveEq(String eq, Cell[][] cells) throws InvalidSyntaxException, InvalidCellValueException, InvalidFormulaException {
+    public String solveEq(String eq, Cell[][] cells) throws InvalidSyntaxException, InvalidCellValueException, InvalidFormulaException, InvalidOperationException {
         String equation = eq;
         ArrayList<String> linkedCells = parser.identifyLinkedCells(equation);
         if(!linkedCells.isEmpty())
@@ -97,7 +103,7 @@ public class Calc {
         return eq;
     }
 
-    private String computeFinalResult(ArrayList<String> sya) throws InvalidSyntaxException {
+    private String computeFinalResult(ArrayList<String> sya) throws InvalidOperationException {
         ListIterator<String> it = sya.listIterator();
         String operators = "*/+-";
         float op1;
@@ -152,7 +158,7 @@ public class Calc {
         return new int[]{initCoords[0],initCoords[1],finCoords[0],finCoords[1]};
     }
 
-    private float operate(float op1, float op2, String op) throws InvalidSyntaxException {
+    private float operate(float op1, float op2, String op) throws InvalidOperationException {
         float res;
         switch(op){
             case "+":
@@ -168,7 +174,7 @@ public class Calc {
                 res = op1/op2;
                 break;
             default:
-                throw new InvalidSyntaxException();
+                throw new InvalidOperationException();
                 
         }
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

@@ -3,8 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package client;
+package client.libraries;
 
+import client.operations.Max;
+import client.operations.Sum;
+import client.operations.Average;
+import client.operations.Min;
+import client.operations.Operation;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;

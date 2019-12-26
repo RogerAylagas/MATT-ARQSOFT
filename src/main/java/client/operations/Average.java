@@ -3,14 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package client;
+package client.operations;
 
 /**
  *
  * @author roger
  */
 public class Average implements Operation{
-    Sum sum;
+
+    public Average() {
+    }
 
     @Override
     public float compute(float a, float b) {
@@ -19,7 +21,14 @@ public class Average implements Operation{
 
     @Override
     public float compute(float[] nums) {
-        return (float)this.sum.compute(nums)/nums.length;
+        return (float)sumArray(nums)/nums.length;
     }
     
+    private float sumArray(float[] nums){
+        float res = 0;
+        for (int i = 0; i < nums.length; ++i) {
+            res += nums[i];
+        }
+        return res;
+    }
 }

@@ -5,6 +5,12 @@
  */
 package client;
 
+import client.libraries.Library;
+import client.exceptions.InvalidCellException;
+import client.exceptions.InvalidSyntaxException;
+import client.exceptions.InvalidFormulaException;
+import client.exceptions.InvalidCellValueException;
+import client.exceptions.InvalidOperationException;
 import static java.lang.Integer.max;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,7 +40,7 @@ public class Spreadsheet {
         this.calc = new Calc();
     }
 
-    public void edit(String row, String col, String input) throws InvalidCellException, InvalidSyntaxException, InvalidCellValueException, InvalidFormulaException {
+    public void edit(String row, String col, String input) throws InvalidCellException, InvalidSyntaxException, InvalidCellValueException, InvalidFormulaException, InvalidOperationException {
         try{
             int r = Integer.parseInt(row)-1;
             int c = Integer.parseInt(col)-1; 

@@ -5,6 +5,8 @@
  */
 package client;
 
+import client.exceptions.InvalidCellException;
+
 /**
  *
  * @author roger

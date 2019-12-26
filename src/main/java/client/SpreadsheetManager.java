@@ -5,6 +5,10 @@
  */
 package client;
 
+import client.exceptions.InvalidCellException;
+import client.exceptions.InvalidSyntaxException;
+import client.exceptions.InvalidFormulaException;
+import client.exceptions.InvalidCellValueException;
 import java.util.ArrayList;
 import java.util.HashMap;
 

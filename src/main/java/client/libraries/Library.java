@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package client;
+package client.libraries;
 
 /**
  *
- * @author roger
+ * @author Roger Aylagas Torres
  */
-public class InvalidSyntaxException extends Exception {
+public abstract class Library {
 
-    public InvalidSyntaxException() {
+    public Library() {
     }
     
 }

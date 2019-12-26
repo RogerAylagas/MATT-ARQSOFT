@@ -3,13 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package client;
+package client.operationsUnit;
 
+import client.operations.Max;
+import client.operations.Max;
 import java.util.Arrays;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
@@ -21,13 +20,15 @@ import org.junit.runners.Parameterized.Parameters;
  * @author roger
  */
 @RunWith(value = Parameterized.class)
-public class MaxTest {
-    private float a, b, expected;
-    private float[] values;
-    private float expected_;
+public class MaxUnitTest {
+    private final float a;
+    private final float b;
+    private final float expected;
+    private final float[] values;
+    private final float expected_;
     Max instance;
     
-    public MaxTest(float a, float b, float expected, float[] values, float expected_) {
+    public MaxUnitTest(float a, float b, float expected, float[] values, float expected_) {
         this.a = a;
         this.b = b;
         this.expected = expected;
@@ -35,23 +36,11 @@ public class MaxTest {
         this.expected_ = expected_;
     }
     
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
     @Before
     public void setUp() {
         instance = new Max();
     }
-    
-    @After
-    public void tearDown() {
-    }
-    
+
     @Parameters
     public static Iterable<Object[]> getData(){
         return Arrays.asList(new Object[][]{
@@ -69,8 +58,6 @@ public class MaxTest {
         System.out.println("Test MAX float_float");
         float result = instance.compute(a, b);
         assertEquals(expected, result, 0.001);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
     }
 
     /**
@@ -80,11 +67,8 @@ public class MaxTest {
     @Test
     public void testCompute_floatArr() {
         System.out.println("Test MAX array");
-
         float result = instance.compute(this.values);
         assertEquals(this.expected_, result, 0.001);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
     }
     
 }

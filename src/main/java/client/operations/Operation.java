@@ -3,15 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package client;
+package client.operations;
 
 /**
  *
  * @author roger
  */
-public class InvalidCellValueException extends Exception {
-
-    public InvalidCellValueException() {
-    }
-    
+public interface Operation {
+    public float compute(float a, float b);
+    public float compute(float[] nums);
 }
