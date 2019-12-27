@@ -116,8 +116,6 @@ public class Parser {
                             stack.subList(idx-1, stack.size()).clear();
                             isParenthesis = false;
                             it.next();
-                            //idx = lit.previousIndex();
-                            //stack.remove(idx);
                         }    
                     }else{
                         stack.add(Character.toString(symbol));
