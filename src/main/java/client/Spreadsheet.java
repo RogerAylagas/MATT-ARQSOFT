@@ -24,19 +24,18 @@ public class Spreadsheet {
     private String name;
     private String folder;
     private ArrayList<Library> libraries;
-    private Cell[][] cells;
+    private Grid grid;
     private DataManager dataManager;
     private Calc calc;
     private int numCells;
 
     public Spreadsheet(String name, String folder) {
-        this.numCells = 3;
         // TODO: Define menu
         this.name = name;
         this.folder = folder;
         this.dataManager = new DataManager(this.name, this.folder);
         this.libraries = new ArrayList<Library>();
-        this.cells = new Cell[this.numCells][this.numCells];
+        this.grid = new Grid();
         this.calc = new Calc();
     }
 
@@ -50,13 +49,16 @@ public class Spreadsheet {
             }             
         
             if(this.isEquation(input)){
-                String result = this.calc.solveEq(input, this.cells);
-                this.cells[r][c].setValue(result);
-                this.calc.recomputeCells(row,col,this.cells);
+                String result = this.calc.solveEq(input, this.grid);
+                this.grid.setValue(r, c, result);
+                //this.cells[r][c].setValue(result);
+                this.calc.recomputeCells(row,col,this.grid);
             }else{
-                this.cells[r][c].setValueToNull();
+                this.grid.setValueToNull(r, c);
+                //this.cells[r][c].setValueToNull();
             }
-            this.cells[r][c].setContent(input);
+            this.grid.setContent(r, c, input);
+            //this.cells[r][c].setContent(input);
         }catch(NumberFormatException e){
             throw new InvalidCellException("E Specified Row or Column are not correct");
         }
@@ -81,11 +83,7 @@ public class Spreadsheet {
     }
 
     private void extendSpreadsheet(int newDim) {
-        Cell[][] newCells = new Cell[newDim][newDim];
-        for (int r = 0; r < this.numCells; ++r) {
-            System.arraycopy(this.cells[r], 0, newCells[r], 0, this.numCells);
-        }
-        this.cells = Arrays.copyOf(newCells, newDim);
+        this.grid.extendSpreadsheet(newDim);
     }
     
 }

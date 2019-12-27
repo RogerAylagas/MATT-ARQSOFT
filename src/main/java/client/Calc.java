@@ -30,24 +30,24 @@ public class Calc {
         this.basicLib = new BasicLib();
     }
     
-    public String solveEq(String eq, Cell[][] cells) throws InvalidSyntaxException, InvalidCellValueException, InvalidFormulaException, InvalidOperationException {
+    public String solveEq(String eq, Grid grid) throws InvalidSyntaxException, InvalidCellValueException, InvalidFormulaException, InvalidOperationException {
         String equation = eq;
         ArrayList<String> linkedCells = parser.identifyLinkedCells(equation);
         if(!linkedCells.isEmpty())
-            equation = this.replaceLinkedByValue(equation, cells, linkedCells);
+            equation = this.replaceLinkedByValue(equation, grid, linkedCells);
         ArrayList<String> formulas = parser.identifyFormulas(equation); 
         if(!formulas.isEmpty())
-            equation = this.computeFromulas(equation, cells, formulas);
+            equation = this.computeFromulas(equation, grid, formulas);
         ArrayList<String> sya = parser.shuntingYardAlgorithm(equation);
         String result = this.computeFinalResult(sya);
         return result;
     }
 
-    void recomputeCells(String row, String col, Cell[][] cells) {
+    void recomputeCells(String row, String col, Grid grid) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    private String replaceLinkedByValue(String equation, Cell[][] cells, ArrayList<String> linkedCells) throws InvalidCellValueException {
+    private String replaceLinkedByValue(String equation, Grid grid, ArrayList<String> linkedCells) throws InvalidCellValueException {
         ListIterator<String> it = linkedCells.listIterator();
         int[] coordinates = new int[2];
         String linkedCell;
@@ -55,7 +55,8 @@ public class Calc {
             linkedCell = it.next();
             coordinates = convertStringToCell(linkedCell);
             try{
-                equation = equation.replace(linkedCell, cells[coordinates[0]][coordinates[1]].getValue());
+                equation = equation.replace(linkedCell, grid.getValue(coordinates[0], coordinates[1]));
+                //equation = equation.replace(linkedCell, cells[coordinates[0]][coordinates[1]].getValue());
             }catch(Exception e){
                 throw new InvalidCellValueException();
             }
@@ -63,7 +64,7 @@ public class Calc {
         return equation;
     }
 
-    private String computeFromulas(String equation,Cell[][] cells, ArrayList<String> formulas) throws InvalidFormulaException {
+    private String computeFromulas(String equation,Grid grid, ArrayList<String> formulas) throws InvalidFormulaException {
         ListIterator<String> it = formulas.listIterator();
         String eq = equation;
         String formula;
@@ -82,7 +83,8 @@ public class Calc {
                     float[] values = new float[nRows*nCols];
                     for (int i = coords[1]; i <= coords[3]; i++) {
                         for (int j = coords[0]; j <= coords[2]; j++) {
-                            values[(i-coords[1])*nRows+j-coords[0]] = Float.parseFloat(cells[i][j].getValue());
+                            //values[(i-coords[1])*nRows+j-coords[0]] = Float.parseFloat(cells[i][j].getValue());
+                            values[(i-coords[1])*nRows+j-coords[0]] = Float.parseFloat(grid.getValue(i, j));
                         }
                     }
                     res = op.compute(values);
@@ -91,8 +93,10 @@ public class Calc {
                 }else if (args.length == 2){
                     int[] coords1 = this.convertStringToCell(args[0]);
                     int[] coords2 = this.convertStringToCell(args[1]);
-                    float op1 = Float.parseFloat(cells[coords1[1]][coords1[0]].getValue());
-                    float op2 = Float.parseFloat(cells[coords2[1]][coords2[0]].getValue());
+                    //float op1 = Float.parseFloat(cells[coords1[1]][coords1[0]].getValue());
+                    //float op2 = Float.parseFloat(cells[coords2[1]][coords2[0]].getValue());
+                    float op1 = Float.parseFloat(grid.getValue(coords1[1], coords1[0]));
+                    float op2 = Float.parseFloat(grid.getValue(coords2[1], coords2[0]));
                     res = op.compute(op1, op2);
                     eq.replace(formula, Float.toString(res));
                     
