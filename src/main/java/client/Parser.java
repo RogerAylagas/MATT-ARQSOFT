@@ -17,26 +17,35 @@ import java.util.ListIterator;
  */
 public class Parser {
 
+    public Parser() {
+    }
+
     public ArrayList<String> identifyLinkedCells(String equation) {
         ArrayList<String> linkedCells = new ArrayList();
-        int len = equation.length();
-        for(int i = 0; i < len; i++){
-            if(Character.isUpperCase(equation.charAt(i))){
-                String possibleLinkedCell = Character.toString(equation.charAt(i));
-                int j = i+1;
-                while(j<len && (Character.isUpperCase(equation.charAt(j)) ||
-                        Character.isDigit(equation.charAt(j)) ||
-                        Character.toString(equation.charAt(j)).equals(":"))){
-                    possibleLinkedCell = possibleLinkedCell.concat(Character.toString(equation.charAt(j)));
-                    ++j;
+        char symbol;
+        String possibleLinkedCell;
+        CharacterIterator it = new StringCharacterIterator(equation);
+        while (it.current() != CharacterIterator.DONE) {
+            symbol = it.current();
+            if(Character.isUpperCase(symbol)){
+                possibleLinkedCell = Character.toString(symbol);
+                symbol = it.next();
+                while (it.current() != CharacterIterator.DONE &&
+                        (Character.isUpperCase(symbol) ||
+                        Character.isDigit(symbol) ||
+                        symbol == ':')) {
+                    possibleLinkedCell = possibleLinkedCell.concat(Character.toString(symbol));
+                    symbol = it.next();
                 }
-                if(j<len && this.isOperator(Character.toString(equation.charAt(j)))){
+                if(it.current() != CharacterIterator.DONE &&
+                        this.isOperator(Character.toString(symbol)) &&
+                        !possibleLinkedCell.contains(":")){
                     linkedCells.add(possibleLinkedCell);
-                }else if(j==len){
+                }else if(it.current() == CharacterIterator.DONE){
                     linkedCells.add(possibleLinkedCell);
                 }
-                i=j;
             }
+            it.next();
         }
         return linkedCells;
     }
@@ -74,10 +83,11 @@ public class Parser {
         boolean isParenthesis = false;
         CharacterIterator it = new StringCharacterIterator(equation);
         String lastInStack;
-        int idx;
+        int idx =0;
+        String digit = "";
         
         while (it.current() != CharacterIterator.DONE) {
-                char symbol =it.current();
+                char symbol = it.current();
                 if(isForStack( Character.toString(symbol))){
                     if(!stack.isEmpty() && hasLessPrecedence(Character.toString(symbol),stack.get(stack.size()-1))){
                         lastInStack = stack.remove(stack.size()-1);
@@ -87,10 +97,11 @@ public class Parser {
                             queue.add(lastInStack);
                         }
                         stack.add(Character.toString(symbol));
+                        it.next();
                     }else if(symbol=='('){
                         stack.add(Character.toString(symbol));
                         isParenthesis = true;
-                        
+                        it.next();
                     }else if(symbol==')'){
                         if(isParenthesis == false)
                             throw new InvalidSyntaxException();
@@ -98,26 +109,36 @@ public class Parser {
                             ListIterator<String> lit = stack.listIterator(stack.size());
                             while(!stack.get(lit.previousIndex()).equals("(")){
                                 idx = lit.previousIndex();
-                                lit.previous();
-                                lastInStack = stack.remove(idx);
+                                lastInStack = stack.get(idx);
                                 queue.add(lastInStack);
-                                
+                                lit.previous();
                             }
+                            stack.subList(idx-1, stack.size()).clear();
                             isParenthesis = false;
-                            idx = lit.previousIndex();
-                            lastInStack = stack.remove(idx);
+                            it.next();
+                            //idx = lit.previousIndex();
+                            //stack.remove(idx);
                         }    
                     }else{
                         stack.add(Character.toString(symbol));
+                        it.next();
                     }
                 }else if(Character.isDigit(symbol)){
-                    queue.add(Character.toString(symbol));
+                    digit = digit.concat(Character.toString(symbol));
+                    it.next();
+                    symbol = it.current();
+                    while(Character.isDigit(it.current()) || it.current()=='.'){
+                        digit = digit.concat(Character.toString(symbol));
+                        it.next();
+                        symbol = it.current();
+                    }
+                     queue.add(digit);
+                     digit = "";
                 }else{
                     throw new InvalidSyntaxException();
                 }
-                it.next();
         }
-        if(isParenthesis==true) System.out.println("syntax error");;
+        if(isParenthesis==true) System.out.println("syntax error");
         ListIterator<String> lit = stack.listIterator(stack.size());
         String prev;
         while(lit.hasPrevious()){
@@ -127,8 +148,8 @@ public class Parser {
         return queue;
     }
     
-    public boolean isOperator(String c){
-        String operatorChars = "/*-+";
+    private boolean isOperator(String c){
+        String operatorChars = "/*-+),";
         if (operatorChars.contains(c)) {
             return true;
         }else{
