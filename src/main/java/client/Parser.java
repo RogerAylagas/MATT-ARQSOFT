@@ -5,6 +5,7 @@
  */
 package client;
 
+import client.exceptions.InvalidOperationException;
 import client.exceptions.InvalidSyntaxException;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
@@ -77,7 +78,7 @@ public class Parser {
         return formulas;
     }
 
-    public ArrayList<String> infix2ReversePolish(String equation) throws InvalidSyntaxException{
+    public ArrayList<String> infix2ReversePolish(String equation) throws InvalidSyntaxException, InvalidOperationException{
         ArrayList<String> stack = new ArrayList<String>();
         ArrayList<String> queue = new ArrayList<String>();
         boolean isParenthesis = false;
@@ -85,10 +86,11 @@ public class Parser {
         String lastInStack;
         int idx =0;
         String digit = "";
+        String token;
         
         while (it.current() != CharacterIterator.DONE) {
-                char token = it.current();
-                if(isForStack( Character.toString(token))){
+                token = Character.toString(it.current());
+                if(isForStack(token)){/*
                     if(!stack.isEmpty() && hasLessPrecedence(Character.toString(token),stack.get(stack.size()-1))){
                         lastInStack = stack.remove(stack.size()-1);
                         queue.add(lastInStack);
@@ -121,14 +123,45 @@ public class Parser {
                         stack.add(Character.toString(token));
                         it.next();
                     }
-                }else if(Character.isDigit(token)){
-                    digit = digit.concat(Character.toString(token));
-                    it.next();
-                    token = it.current();
-                    while(Character.isDigit(it.current()) || it.current()=='.'){
-                        digit = digit.concat(Character.toString(token));
+                
+                */
+                
+                    if(stack.isEmpty()){
+                        stack.add(token);
                         it.next();
-                        token = it.current();
+                    }else if(token.equals("\\(")){
+                        stack.add(token);
+                        isParenthesis = true;
+                        it.next();
+                    }else if(token.equals("\\)")){
+                        if(isParenthesis == false) throw new InvalidSyntaxException();
+                        ListIterator<String> lit = stack.listIterator(stack.size());
+                        while(lit.hasPrevious() && !stack.get(lit.previousIndex()).equals("\\(")){
+                            idx = lit.previousIndex();
+                            queue.add(stack.get(idx));
+                            lit.previous();
+                        }
+                        stack.subList(idx-1, stack.size()).clear();
+                        it.next();
+                    }else{
+                        if(this.hasHigherPrecedence(token, stack.get(stack.size()-1))){
+                            stack.add(token);
+                            it.next();
+                        }else{
+                            queue.add(stack.remove(stack.size()-1));
+                            while(!this.hasHigherPrecedence(token, stack.get(stack.size()-1))){
+                                queue.add(stack.remove(stack.size()-1));
+                            }
+                            stack.add(token);
+                            it.next();
+                        }
+                    }
+                }else if(token.matches("\\d+")){
+                    digit = digit.concat(token);
+                    token = Character.toString(it.next());
+                    while(token.matches("\\d+") || token.equals(".")){
+                        digit = digit.concat(token);
+                        token = Character.toString(it.next());
                     }
                      queue.add(digit);
                      digit = "";
@@ -136,7 +169,7 @@ public class Parser {
                     throw new InvalidSyntaxException();
                 }
         }
-        if(isParenthesis==true) System.out.println("syntax error");
+        if(isParenthesis==true) throw new InvalidSyntaxException();
         ListIterator<String> lit = stack.listIterator(stack.size());
         String prev;
         while(lit.hasPrevious()){
@@ -156,7 +189,7 @@ public class Parser {
     }
     
     private boolean isForStack(String c){
-        String alowedChars = "/*-+()";
+        String alowedChars = "/*-+()^";
         if (alowedChars.contains(c)) {
             return true;
         }else{
@@ -164,13 +197,24 @@ public class Parser {
         }
     }
 
-    private boolean hasLessPrecedence(String in, String last) {
-        String highPrecedence = "/*";
-        String lowPrecedence = "+-";
-        if(lowPrecedence.contains(in) && highPrecedence.contains(last))
-            return true;
-        return false;
-                 
+    private boolean hasHigherPrecedence(String in, String last) throws InvalidOperationException {
+        if(precedence(in)>precedence(last)) return true;
+        return false;          
+    }
+    
+    private int precedence(String operand) throws InvalidOperationException{
+        ArrayList<String> precedence = new ArrayList<>();
+        precedence.add("\\(");
+        precedence.add("+-");
+        precedence.add("*/");
+        precedence.add("^");
+        ListIterator<String> lit = precedence.listIterator();
+        int idx;
+        while(lit.hasNext()){
+            idx = lit.nextIndex();
+            if(lit.next().contains(operand)) return idx;
+        }
+        throw new InvalidOperationException();
     }
     
     
