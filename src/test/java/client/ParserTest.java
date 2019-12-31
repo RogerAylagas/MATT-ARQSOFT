@@ -55,9 +55,9 @@ public class ParserTest {
         eIF.add("AVERAGE(L9:L12)"); eIF.add("MAX(A4:B5)");
         ArrayList<String> eSYA = new ArrayList<String>();
         eSYA.add("1.23"); eSYA.add("4.567"); eSYA.add("3");
-        eSYA.add("/"); eSYA.add("3.4"); eSYA.add("6"); eSYA.add("4.3");
-        eSYA.add("*"); eSYA.add("+"); eSYA.add("3000"); eSYA.add("-");
-        eSYA.add("-"); eSYA.add("+");
+        eSYA.add("/"); eSYA.add("+"); eSYA.add("3.4"); eSYA.add("6");
+        eSYA.add("4.3"); eSYA.add("*"); eSYA.add("+");   eSYA.add("-");
+        eSYA.add("3000"); eSYA.add("-"); 
         return Arrays.asList(new Object[][]{
             {"A1*B2-AB34/(C4*AAA32-B5)+SUM(A3:B4)-MIN(A3,B30)", eILC,
             "SUM(A3,B4)-MIN(AA2:AA35)*AVERAGE(L9:L12)/MAX(A4:B5)", eIF,
@@ -89,9 +89,9 @@ public class ParserTest {
      * Test of shuntingYardAlgorithm method, of class Parser.
      */
     @Test
-    public void testShuntingYardAlgorithm() throws Exception {
+    public void testInfix2ReversePolish() throws Exception {
         System.out.println("Test PARSER shuntingYardAlgorithm");
-        ArrayList<String> result = instance.shuntingYardAlgorithm(equationSYA);
+        ArrayList<String> result = instance.infix2ReversePolish(equationSYA);
         assertEquals(expSYA, result);
     }
 }

@@ -83,65 +83,30 @@ public class Parser {
         ArrayList<String> queue = new ArrayList<String>();
         boolean isParenthesis = false;
         CharacterIterator it = new StringCharacterIterator(equation);
-        String lastInStack;
         int idx =0;
         String digit = "";
         String token;
         
         while (it.current() != CharacterIterator.DONE) {
                 token = Character.toString(it.current());
-                if(isForStack(token)){/*
-                    if(!stack.isEmpty() && hasLessPrecedence(Character.toString(token),stack.get(stack.size()-1))){
-                        lastInStack = stack.remove(stack.size()-1);
-                        queue.add(lastInStack);
-                        while(hasLessPrecedence(Character.toString(token),stack.get(stack.size()-1))){
-                            lastInStack = stack.remove(stack.size()-1);
-                            queue.add(lastInStack);
-                        }
-                        stack.add(Character.toString(token));
-                        it.next();
-                    }else if(token=='('){
-                        stack.add(Character.toString(token));
-                        isParenthesis = true;
-                        it.next();
-                    }else if(token==')'){
-                        if(isParenthesis == false)
-                            throw new InvalidSyntaxException();
-                        else{
-                            ListIterator<String> lit = stack.listIterator(stack.size());
-                            while(!stack.get(lit.previousIndex()).equals("(")){
-                                idx = lit.previousIndex();
-                                lastInStack = stack.get(idx);
-                                queue.add(lastInStack);
-                                lit.previous();
-                            }
-                            stack.subList(idx-1, stack.size()).clear();
-                            isParenthesis = false;
-                            it.next();
-                        }    
-                    }else{
-                        stack.add(Character.toString(token));
-                        it.next();
-                    }
-                
-                */
-                
+                if(isForStack(token)){
                     if(stack.isEmpty()){
                         stack.add(token);
                         it.next();
-                    }else if(token.equals("\\(")){
+                    }else if(token.equals("(")){
                         stack.add(token);
                         isParenthesis = true;
                         it.next();
-                    }else if(token.equals("\\)")){
+                    }else if(token.equals(")")){
                         if(isParenthesis == false) throw new InvalidSyntaxException();
                         ListIterator<String> lit = stack.listIterator(stack.size());
-                        while(lit.hasPrevious() && !stack.get(lit.previousIndex()).equals("\\(")){
+                        while(lit.hasPrevious() && !stack.get(lit.previousIndex()).equals("(")){
                             idx = lit.previousIndex();
                             queue.add(stack.get(idx));
                             lit.previous();
                         }
                         stack.subList(idx-1, stack.size()).clear();
+                        isParenthesis = false;
                         it.next();
                     }else{
                         if(this.hasHigherPrecedence(token, stack.get(stack.size()-1))){
@@ -149,7 +114,7 @@ public class Parser {
                             it.next();
                         }else{
                             queue.add(stack.remove(stack.size()-1));
-                            while(!this.hasHigherPrecedence(token, stack.get(stack.size()-1))){
+                            while(!stack.isEmpty() && !this.hasHigherPrecedence(token, stack.get(stack.size()-1))){
                                 queue.add(stack.remove(stack.size()-1));
                             }
                             stack.add(token);
@@ -204,7 +169,7 @@ public class Parser {
     
     private int precedence(String operand) throws InvalidOperationException{
         ArrayList<String> precedence = new ArrayList<>();
-        precedence.add("\\(");
+        precedence.add("(");
         precedence.add("+-");
         precedence.add("*/");
         precedence.add("^");
