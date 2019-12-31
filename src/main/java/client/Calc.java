@@ -123,8 +123,8 @@ public class Calc {
         while(it.hasNext()){
             token = it.next();
             if(operators.contains(token)){
-                opR = new BigDecimal(sya.remove(stack.size()-1));
-                opL = new BigDecimal(sya.remove(stack.size()-2));
+                opR = new BigDecimal(stack.remove(stack.size()-1));
+                opL = new BigDecimal(stack.remove(stack.size()-1));
                 res = operate(opL,opR, token);
                 stack.add(res.toString());
             }else{
