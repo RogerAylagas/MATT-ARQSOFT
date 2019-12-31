@@ -56,11 +56,12 @@ public class ParserTest {
         ArrayList<String> eSYA = new ArrayList<String>();
         eSYA.add("1.23"); eSYA.add("4.567"); eSYA.add("3");
         eSYA.add("/"); eSYA.add("3.4"); eSYA.add("6"); eSYA.add("4.3");
-        eSYA.add("*"); eSYA.add("+"); eSYA.add("-"); eSYA.add("+");
+        eSYA.add("*"); eSYA.add("+"); eSYA.add("3000"); eSYA.add("-");
+        eSYA.add("-"); eSYA.add("+");
         return Arrays.asList(new Object[][]{
             {"A1*B2-AB34/(C4*AAA32-B5)+SUM(A3:B4)-MIN(A3,B30)", eILC,
             "SUM(A3,B4)-MIN(AA2:AA35)*AVERAGE(L9:L12)/MAX(A4:B5)", eIF,
-            "1.23+4.567/3-(3.4+6*4.3)", eSYA}
+            "1.23+4.567/3-(3.4+6*4.3)-3000", eSYA}
         });
     }
 

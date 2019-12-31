@@ -12,6 +12,7 @@ import client.exceptions.InvalidFormulaException;
 import client.exceptions.InvalidCellValueException;
 import client.operations.Operation;
 import static java.lang.Math.pow;
+import java.math.BigDecimal;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import java.util.ArrayList;
@@ -38,8 +39,8 @@ public class Calc {
         ArrayList<String> formulas = parser.identifyFormulas(equation); 
         if(!formulas.isEmpty())
             equation = this.computeFromulas(equation, grid, formulas);
-        ArrayList<String> sya = parser.shuntingYardAlgorithm(equation);
-        String result = this.computeFinalResult(sya);
+        ArrayList<String> sya = parser.infix2ReversePolish(equation);
+        String result = this.evalueateReversePolish(sya);
         return result;
     }
 
@@ -76,62 +77,61 @@ public class Calc {
             Operation op = this.basicLib.getOperation(split[0]);
             String[] args = split[1].split("\\)")[0].split(",");
             if (op != null){
-                if(args.length == 1){
-                    int[] coords = this.convertStringToRange(args[0]);
-                    int nRows = coords[3]-coords[1]+1;
-                    int nCols = coords[2]-coords[0]+1;
-                    float[] values = new float[nRows*nCols];
-                    for (int i = coords[1]; i <= coords[3]; i++) {
-                        for (int j = coords[0]; j <= coords[2]; j++) {
-                            //values[(i-coords[1])*nRows+j-coords[0]] = Float.parseFloat(cells[i][j].getValue());
-                            values[(i-coords[1])*nRows+j-coords[0]] = Float.parseFloat(grid.getValue(i, j));
-                        }
-                    }
-                    res = op.compute(values);
-                    eq.replace(formula, Float.toString(res));
-                    
-                }else if (args.length == 2){
-                    int[] coords1 = this.convertStringToCell(args[0]);
-                    int[] coords2 = this.convertStringToCell(args[1]);
-                    //float op1 = Float.parseFloat(cells[coords1[1]][coords1[0]].getValue());
-                    //float op2 = Float.parseFloat(cells[coords2[1]][coords2[0]].getValue());
-                    float op1 = Float.parseFloat(grid.getValue(coords1[1], coords1[0]));
-                    float op2 = Float.parseFloat(grid.getValue(coords2[1], coords2[0]));
-                    res = op.compute(op1, op2);
-                    eq.replace(formula, Float.toString(res));
-                    
-                }else throw new InvalidFormulaException();
+                switch (args.length) {
+                    case 1:
+                        int[] coords = this.convertStringToRange(args[0]);
+                        int nRows = coords[3]-coords[1]+1;
+                        int nCols = coords[2]-coords[0]+1;
+                        float[] values = new float[nRows*nCols];
+                        for (int i = coords[1]; i <= coords[3]; i++) {
+                            for (int j = coords[0]; j <= coords[2]; j++) {
+                                //values[(i-coords[1])*nRows+j-coords[0]] = Float.parseFloat(cells[i][j].getValue());
+                                values[(i-coords[1])*nRows+j-coords[0]] = Float.parseFloat(grid.getValue(i, j));
+                            }
+                        }   res = op.compute(values);
+                        eq = eq.replace(formula, Float.toString(res));
+                        break;
+                    case 2:
+                        int[] coords1 = this.convertStringToCell(args[0]);
+                        int[] coords2 = this.convertStringToCell(args[1]);
+                        //float op1 = Float.parseFloat(cells[coords1[1]][coords1[0]].getValue());
+                        //float op2 = Float.parseFloat(cells[coords2[1]][coords2[0]].getValue());
+                        float op1 = Float.parseFloat(grid.getValue(coords1[1], coords1[0]));
+                        float op2 = Float.parseFloat(grid.getValue(coords2[1], coords2[0]));
+                        res = op.compute(op1, op2);
+                        eq = eq.replace(formula, Float.toString(res));
+                        break;
+                    default:
+                        throw new InvalidFormulaException();
+                }
             }
             else throw new InvalidFormulaException();
         }
         return eq;
     }
 
-    private String computeFinalResult(ArrayList<String> sya) throws InvalidOperationException {
+    // TODO: Rename to reverse polish
+    private String evalueateReversePolish(ArrayList<String> sya) throws InvalidOperationException {
         ListIterator<String> it = sya.listIterator();
         String operators = "*/+-";
-        float op1;
-        float op2;
-        float res;
-        int prevIdx, currIdx, nextIdx;
+        BigDecimal opR;
+        BigDecimal opL;
+        BigDecimal res;
+        ArrayList<String> stack = new ArrayList<String>();
+        String token;
         
         while(it.hasNext()){
-            if(operators.contains(sya.get(it.nextIndex()))){
-                prevIdx = it.previousIndex();
-                currIdx = prevIdx+1;
-                nextIdx = it.nextIndex();
-                op1 = Float.parseFloat(sya.get(prevIdx));
-                op2 = Float.parseFloat(sya.get(currIdx));
-                res = operate(op1,op2, sya.get(nextIdx));
-                sya.set(prevIdx, Float.toString(res));
-                it.previous();
-                sya.remove(currIdx);
-                sya.remove(nextIdx);                
+            token = it.next();
+            if(operators.contains(token)){
+                opR = new BigDecimal(sya.remove(stack.size()-1));
+                opL = new BigDecimal(sya.remove(stack.size()-2));
+                res = operate(opL,opR, token);
+                stack.add(res.toString());
             }else{
-                it.next();
+                stack.add(token);
             }
         }
-        return sya.get(0);
+        return stack.get(0);
     }
 
     private int[] convertStringToCell(String cell) {
@@ -162,26 +162,26 @@ public class Calc {
         return new int[]{initCoords[0],initCoords[1],finCoords[0],finCoords[1]};
     }
 
-    private float operate(float op1, float op2, String op) throws InvalidOperationException {
-        float res;
+    private BigDecimal operate(BigDecimal opL, BigDecimal opR, String op) throws InvalidOperationException {
+        BigDecimal res;
         switch(op){
             case "+":
-                res = op1+op2;
+                res = opL.add(opR);
                 break;
             case "-":
-                res = op1-op2;
+                res = opL.subtract(opR);
                 break;
             case "*":
-                res = op1*op2;
+                res = opL.multiply(opR);
                 break;
             case "/":
-                res = op1/op2;
+                res = opL.divide(opR);
                 break;
             default:
                 throw new InvalidOperationException();
                 
         }
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return res;
     }
 
 

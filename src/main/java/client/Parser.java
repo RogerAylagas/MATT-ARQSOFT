@@ -77,7 +77,7 @@ public class Parser {
         return formulas;
     }
 
-    public ArrayList<String> shuntingYardAlgorithm(String equation) throws InvalidSyntaxException{
+    public ArrayList<String> infix2ReversePolish(String equation) throws InvalidSyntaxException{
         ArrayList<String> stack = new ArrayList<String>();
         ArrayList<String> queue = new ArrayList<String>();
         boolean isParenthesis = false;
@@ -87,22 +87,22 @@ public class Parser {
         String digit = "";
         
         while (it.current() != CharacterIterator.DONE) {
-                char symbol = it.current();
-                if(isForStack( Character.toString(symbol))){
-                    if(!stack.isEmpty() && hasLessPrecedence(Character.toString(symbol),stack.get(stack.size()-1))){
+                char token = it.current();
+                if(isForStack( Character.toString(token))){
+                    if(!stack.isEmpty() && hasLessPrecedence(Character.toString(token),stack.get(stack.size()-1))){
                         lastInStack = stack.remove(stack.size()-1);
                         queue.add(lastInStack);
-                        while(hasLessPrecedence(Character.toString(symbol),stack.get(stack.size()-1))){
+                        while(hasLessPrecedence(Character.toString(token),stack.get(stack.size()-1))){
                             lastInStack = stack.remove(stack.size()-1);
                             queue.add(lastInStack);
                         }
-                        stack.add(Character.toString(symbol));
+                        stack.add(Character.toString(token));
                         it.next();
-                    }else if(symbol=='('){
-                        stack.add(Character.toString(symbol));
+                    }else if(token=='('){
+                        stack.add(Character.toString(token));
                         isParenthesis = true;
                         it.next();
-                    }else if(symbol==')'){
+                    }else if(token==')'){
                         if(isParenthesis == false)
                             throw new InvalidSyntaxException();
                         else{
@@ -118,17 +118,17 @@ public class Parser {
                             it.next();
                         }    
                     }else{
-                        stack.add(Character.toString(symbol));
+                        stack.add(Character.toString(token));
                         it.next();
                     }
-                }else if(Character.isDigit(symbol)){
-                    digit = digit.concat(Character.toString(symbol));
+                }else if(Character.isDigit(token)){
+                    digit = digit.concat(Character.toString(token));
                     it.next();
-                    symbol = it.current();
+                    token = it.current();
                     while(Character.isDigit(it.current()) || it.current()=='.'){
-                        digit = digit.concat(Character.toString(symbol));
+                        digit = digit.concat(Character.toString(token));
                         it.next();
-                        symbol = it.current();
+                        token = it.current();
                     }
                      queue.add(digit);
                      digit = "";
