@@ -18,7 +18,7 @@ import org.junit.runners.Parameterized;
  * @author roger
  */
 @RunWith(value = Parameterized.class)
-public class ParserTest {
+public class ParserUnitTest {
     private final String equationILC;
     private final String equationIF;
     private final String equationSYA;
@@ -27,7 +27,7 @@ public class ParserTest {
     private final ArrayList<String> expSYA;
     Parser instance;
     
-    public ParserTest(String equationILC, ArrayList<String> expILC,
+    public ParserUnitTest(String equationILC, ArrayList<String> expILC,
             String equationIF, ArrayList<String> expIF,
             String equationSYA, ArrayList<String> expSYA) {
              

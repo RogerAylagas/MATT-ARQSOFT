@@ -21,7 +21,7 @@ import org.mockito.runners.MockitoJUnitRunner;
  * @author roger
  */
 @RunWith(MockitoJUnitRunner.class)
-public class CalcTest {
+public class CalcUnitTest {
     @Mock
     private Parser mockParser;
     @Mock
@@ -29,12 +29,12 @@ public class CalcTest {
     @InjectMocks
     private Calc instance;
     
-    public CalcTest() {
+    public CalcUnitTest() {
     }
     
     @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(CalcTest.class);
+        MockitoAnnotations.initMocks(CalcUnitTest.class);
         instance = new Calc();
        
     }
@@ -46,8 +46,8 @@ public class CalcTest {
     public void testSolveEq() throws Exception {
         System.out.println("Test CALC solveEq");
         Mockito.when(mockGrid.getValue(Mockito.anyInt(), Mockito.anyInt())).thenReturn("2");
-        String eq = "A1-4+5-6.3";
-        String expResult = "-3.3";
+        String eq = "4+((4+5-6.3)/3)";
+        String expResult = "4.9";
         String result = instance.solveEq(eq, mockGrid);
         assertEquals(expResult, result);
     }

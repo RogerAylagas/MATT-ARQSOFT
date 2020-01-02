@@ -106,7 +106,7 @@ public class Parser {
                             lit.previous();
                         }
                         stack.subList(idx-1, stack.size()).clear();
-                        isParenthesis = false;
+                        if(!stack.contains("(")) isParenthesis = false;
                         it.next();
                     }else{
                         if(this.hasHigherPrecedence(token, stack.get(stack.size()-1))){
