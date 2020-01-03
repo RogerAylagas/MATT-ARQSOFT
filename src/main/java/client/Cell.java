@@ -26,6 +26,10 @@ public class Cell {
     public void setContent(String input) {
         this.content = input;
     }
+    
+    public String getContent(){
+        return this.content;
+    }
 
     public String getValue() {
         return value;

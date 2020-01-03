@@ -24,6 +24,10 @@ public class Grid {
         return this.cells[r][c].getValue();
     }
     
+    public String getContent(int r, int c){
+        return this.cells[r][c].getContent();
+    }
+    
     public void setValue(int r, int c, String value){
         this.cells[r][c].setValue(value);
     }
@@ -42,6 +46,10 @@ public class Grid {
             System.arraycopy(this.cells[r], 0, newCells[r], 0, this.numCells);
         }
         this.cells = Arrays.copyOf(newCells, newDim);
+    }
+    
+    public int getNumCells(){
+        return this.numCells;
     }
     
 }

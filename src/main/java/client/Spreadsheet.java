@@ -51,14 +51,11 @@ public class Spreadsheet {
             if(this.isEquation(input)){
                 String result = this.calc.solveEq(input, this.grid);
                 this.grid.setValue(r, c, result);
-                //this.cells[r][c].setValue(result);
                 this.calc.recomputeCells(row,col,this.grid);
             }else{
                 this.grid.setValueToNull(r, c);
-                //this.cells[r][c].setValueToNull();
             }
             this.grid.setContent(r, c, input);
-            //this.cells[r][c].setContent(input);
         }catch(NumberFormatException e){
             throw new InvalidCellException("E Specified Row or Column are not correct");
         }

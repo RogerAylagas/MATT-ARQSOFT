@@ -32,7 +32,7 @@ public class Calc {
     }
     
     public String solveEq(String eq, Grid grid) throws InvalidSyntaxException, InvalidCellValueException, InvalidFormulaException, InvalidOperationException {
-        String equation = eq;
+        String equation = eq.substring(1, eq.length());
         ArrayList<String> linkedCells = parser.identifyLinkedCells(equation);
         if(!linkedCells.isEmpty())
             equation = this.replaceLinkedByValue(equation, grid, linkedCells);
@@ -44,8 +44,42 @@ public class Calc {
         return result;
     }
 
-    void recomputeCells(String row, String col, Grid grid) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    void recomputeCells(String row, String col, Grid grid) throws InvalidSyntaxException, InvalidCellValueException, InvalidFormulaException, InvalidOperationException {
+        int nCells = grid.getNumCells();
+        int r = Integer.parseInt(row);
+        int c = Integer.parseInt(col);
+        int[][] checkGrid = new int[nCells][nCells];
+        int checkedCells = 1;
+        String cue; // Content Under Evaluation
+        ArrayList<String> linkedInCue;
+        ArrayList<String> recomputedCells = new ArrayList<>();
+        recomputedCells.add(convertRowCol2Cell(r,c));
+        String cellName, result;
+        while(checkedCells<nCells*nCells){
+            for (int i = 0; i < nCells; i++) {
+                for (int j = 0; j < nCells; j++) {
+                    if((i!=r || j!=c) && checkGrid[i][j]==0){
+                        cue = grid.getContent(i, j);
+                        linkedInCue = this.parser.identifyLinkedCells(cue);
+                        if(linkedInCue.isEmpty()){
+                            cellName = convertRowCol2Cell(i,j);
+                            recomputedCells.add(cellName);
+                            checkGrid[i][j]=1;
+                            checkedCells+=1;
+                        }
+                        else if(recomputedCells.containsAll(linkedInCue)){
+                            result = this.solveEq(cue, grid);
+                            grid.setValue(i, j, result);
+                            cellName = convertRowCol2Cell(i,j);
+                            recomputedCells.add(cellName);
+                            checkGrid[i][j]=1;
+                            checkedCells+=1;
+                        }
+                    }
+                }
+            }
+        }
+        System.out.println("The end");
     }
 
     private String replaceLinkedByValue(String equation, Grid grid, ArrayList<String> linkedCells) throws InvalidCellValueException {
@@ -57,7 +91,6 @@ public class Calc {
             coordinates = convertStringToCell(linkedCell);
             try{
                 equation = equation.replace(linkedCell, grid.getValue(coordinates[0], coordinates[1]));
-                //equation = equation.replace(linkedCell, cells[coordinates[0]][coordinates[1]].getValue());
             }catch(Exception e){
                 throw new InvalidCellValueException();
             }
@@ -85,7 +118,6 @@ public class Calc {
                         float[] values = new float[nRows*nCols];
                         for (int i = coords[1]; i <= coords[3]; i++) {
                             for (int j = coords[0]; j <= coords[2]; j++) {
-                                //values[(i-coords[1])*nRows+j-coords[0]] = Float.parseFloat(cells[i][j].getValue());
                                 values[(i-coords[1])*nRows+j-coords[0]] = Float.parseFloat(grid.getValue(i, j));
                             }
                         }   res = op.compute(values);
@@ -94,8 +126,6 @@ public class Calc {
                     case 2:
                         int[] coords1 = this.convertStringToCell(args[0]);
                         int[] coords2 = this.convertStringToCell(args[1]);
-                        //float op1 = Float.parseFloat(cells[coords1[1]][coords1[0]].getValue());
-                        //float op2 = Float.parseFloat(cells[coords2[1]][coords2[0]].getValue());
                         float op1 = Float.parseFloat(grid.getValue(coords1[1], coords1[0]));
                         float op2 = Float.parseFloat(grid.getValue(coords2[1], coords2[0]));
                         res = op.compute(op1, op2);
@@ -117,7 +147,7 @@ public class Calc {
         BigDecimal opR;
         BigDecimal opL;
         BigDecimal res;
-        ArrayList<String> stack = new ArrayList<String>();
+        ArrayList<String> stack = new ArrayList<>();
         String token;
         
         while(it.hasNext()){
@@ -147,10 +177,10 @@ public class Calc {
         CharacterIterator cit = new StringCharacterIterator(col);
         int c = 0;
         while (cit.current() != CharacterIterator.DONE) {
-            c += ((int)cit.current() % 32)*(int)pow((double)26,(double)(cit.getEndIndex()-cit.getIndex()));
+            c += ((int)cit.current() % 32)*(int)pow((double)26,(double)(cit.getEndIndex()-cit.getIndex()-1))-1;
             cit.next();
         }
-        int r = Integer.parseInt(row);
+        int r = Integer.parseInt(row)-1;
         int[] coordinates = new int[]{r,c};
         return coordinates;
     }
@@ -182,6 +212,23 @@ public class Calc {
                 
         }
         return res;
+    }
+
+    private String convertRowCol2Cell(int i, int j) {
+        String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String cell = "";
+        String toAdd = "";
+        int ent = j;
+        int rest;
+        while((ent/26)>=1||(ent%26>=0)){
+            rest = ent%26;
+            ent = ent/26;
+            toAdd = Character.toString(alphabet.charAt(rest));
+            cell = toAdd.concat(cell);
+            if(ent==0) ent-=1;
+        }
+        cell = cell.concat(Integer.toString(i+1));
+        return cell;
     }
 
 
