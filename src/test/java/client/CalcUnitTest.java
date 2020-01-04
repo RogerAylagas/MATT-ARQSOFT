@@ -46,9 +46,13 @@ public class CalcUnitTest {
 
     /**
      * Test of solveEq method, of class Calc.
+     * @throws client.exceptions.InvalidSyntaxException
+     * @throws client.exceptions.InvalidCellValueException
+     * @throws client.exceptions.InvalidFormulaException
+     * @throws client.exceptions.InvalidOperationException
      */
     @Test
-    public void testSolveEq() throws Exception {
+    public void testSolveEq() throws InvalidSyntaxException, InvalidCellValueException, InvalidFormulaException, InvalidOperationException {
         System.out.println("Test CALC solveEq");
         Mockito.when(mockGrid.getValue(Mockito.anyInt(), Mockito.anyInt())).thenReturn("2");
         String eq = "=4+((4+5-6.3)/3)";
@@ -56,9 +60,27 @@ public class CalcUnitTest {
         String result = instance.solveEq(eq, mockGrid);
         assertEquals(expResult, result);
     }
-
+    
+    /**
+     * Test of solveEq method, of class Calc.
+     * @throws java.lang.Exception
+     */
+    @Test(expected = InvalidSyntaxException.class)
+    public void testSolveEqSyntaxError() throws Exception {
+        System.out.println("Test CALC solveEq");
+        Mockito.when(mockGrid.getValue(Mockito.anyInt(), Mockito.anyInt())).thenReturn("2");
+        String eq = "=4+((4+5-6.3)//3)";
+        String expResult = "4.9";
+        String result = instance.solveEq(eq, mockGrid);
+        assertEquals(expResult, result);
+    }
+    
     /**
      * Test of recomputeCells method, of class Calc.
+     * @throws client.exceptions.InvalidSyntaxException
+     * @throws client.exceptions.InvalidCellValueException
+     * @throws client.exceptions.InvalidFormulaException
+     * @throws client.exceptions.InvalidOperationException
      */
     @Test
     public void testRecomputeCells() throws InvalidSyntaxException, InvalidCellValueException, InvalidFormulaException, InvalidOperationException {
