@@ -9,6 +9,7 @@ import client.exceptions.InvalidCellException;
 import client.exceptions.InvalidSyntaxException;
 import client.exceptions.InvalidFormulaException;
 import client.exceptions.InvalidCellValueException;
+import client.exceptions.InvalidOperationException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -26,7 +27,7 @@ public class SpreadsheetManager {
         return this.menu;
     }
 
-    public void edit(String row, String col, String input) throws InvalidCellException, InvalidSyntaxException, InvalidCellValueException, InvalidFormulaException {
+    public void edit(String row, String col, String input) throws InvalidCellException, InvalidSyntaxException, InvalidCellValueException, InvalidFormulaException, InvalidOperationException {
         this.currSpreadsheet.edit(row,col,input);
     }
 

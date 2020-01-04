@@ -12,7 +12,7 @@ package client.exceptions;
 public class InvalidCellException extends Exception{
 
     public InvalidCellException(String e_Specified_Row_or_Column_are_not_correct) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
     
 }
