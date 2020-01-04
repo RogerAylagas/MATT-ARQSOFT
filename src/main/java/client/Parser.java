@@ -79,24 +79,28 @@ public class Parser {
     }
 
     public ArrayList<String> infix2ReversePolish(String equation) throws InvalidSyntaxException, InvalidOperationException{
-        ArrayList<String> stack = new ArrayList<String>();
-        ArrayList<String> queue = new ArrayList<String>();
+        ArrayList<String> stack = new ArrayList<>();
+        ArrayList<String> queue = new ArrayList<>();
         boolean isParenthesis = false;
         CharacterIterator it = new StringCharacterIterator(equation);
         int idx =0;
         String digit = "";
-        String token;
+        String token, prevToken = "";
         
         while (it.current() != CharacterIterator.DONE) {
                 token = Character.toString(it.current());
+                if(this.isOperator(prevToken)&& !prevToken.equals(")")&& this.isOperator(token)) 
+                    throw new InvalidSyntaxException();
                 if(isForStack(token)){
                     if(stack.isEmpty()){
                         stack.add(token);
                         it.next();
+                        prevToken = token;
                     }else if(token.equals("(")){
                         stack.add(token);
                         isParenthesis = true;
                         it.next();
+                        prevToken = token;
                     }else if(token.equals(")")){
                         if(isParenthesis == false) throw new InvalidSyntaxException();
                         ListIterator<String> lit = stack.listIterator(stack.size());
@@ -108,6 +112,7 @@ public class Parser {
                         stack.subList(idx-1, stack.size()).clear();
                         if(!stack.contains("(")) isParenthesis = false;
                         it.next();
+                        prevToken = token;
                     }else{
                         if(this.hasHigherPrecedence(token, stack.get(stack.size()-1))){
                             stack.add(token);
@@ -120,16 +125,19 @@ public class Parser {
                             stack.add(token);
                             it.next();
                         }
+                        prevToken = token;
                     }
                 }else if(token.matches("\\d+")){
                     digit = digit.concat(token);
+                    prevToken = token;
                     token = Character.toString(it.next());
                     while(token.matches("\\d+") || token.equals(".")){
                         digit = digit.concat(token);
+                        prevToken = token;
                         token = Character.toString(it.next());
                     }
-                     queue.add(digit);
-                     digit = "";
+                    queue.add(digit);
+                    digit = "";
                 }else{
                     throw new InvalidSyntaxException();
                 }
@@ -145,7 +153,7 @@ public class Parser {
     }
     
     private boolean isOperator(String c){
-        String operatorChars = "/*-+),";
+        String operatorChars = "/*-+),^";
         if (operatorChars.contains(c)) {
             return true;
         }else{
