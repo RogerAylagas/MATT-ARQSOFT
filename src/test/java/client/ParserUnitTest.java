@@ -5,6 +5,7 @@
  */
 package client;
 
+import client.exceptions.InvalidSyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import org.junit.Before;
@@ -22,14 +23,20 @@ public class ParserUnitTest {
     private final String equationILC;
     private final String equationIF;
     private final String equationSYA;
+    private final String equationSyntaxE1;
+    private final String equationSyntaxE2;
+    private final String equationSYAPow;
     private final ArrayList<String> expILC;
     private final ArrayList<String> expIF;
     private final ArrayList<String> expSYA;
+    private final ArrayList<String> expSYAPow;
     Parser instance;
     
     public ParserUnitTest(String equationILC, ArrayList<String> expILC,
             String equationIF, ArrayList<String> expIF,
-            String equationSYA, ArrayList<String> expSYA) {
+            String equationSYA, ArrayList<String> expSYA,
+            String equationSyntaxE1, String equationSyntaxE2,
+            String equationSYAPow, ArrayList<String> expSYAPow) {
              
         this.equationILC = equationILC;
         this.equationIF = equationIF;
@@ -37,6 +44,10 @@ public class ParserUnitTest {
         this.expILC = expILC;
         this.expIF = expIF;
         this.expSYA = expSYA;
+        this.equationSyntaxE1 = equationSyntaxE1;
+        this.equationSyntaxE2 = equationSyntaxE2;
+        this.expSYAPow = expSYAPow;
+        this.equationSYAPow = equationSYAPow;
     }
     
     @Before
@@ -57,11 +68,14 @@ public class ParserUnitTest {
         eSYA.add("1.23"); eSYA.add("4.567"); eSYA.add("3");
         eSYA.add("/"); eSYA.add("+"); eSYA.add("3.4"); eSYA.add("6");
         eSYA.add("4.3"); eSYA.add("*"); eSYA.add("+");   eSYA.add("-");
-        eSYA.add("3000"); eSYA.add("-"); 
+        eSYA.add("3000"); eSYA.add("-");
+        ArrayList<String> eSYAPow = new ArrayList<String>();
+        eSYAPow.add("2"); eSYAPow.add("4"); eSYAPow.add("^");
         return Arrays.asList(new Object[][]{
             {"A1*B2-AB34/(C4*AAA32-B5)+SUM(A3:B4)-MIN(A3,B30)", eILC,
             "SUM(A3,B4)-MIN(AA2:AA35)*AVERAGE(L9:L12)/MAX(A4:B5)", eIF,
-            "1.23+4.567/3-(3.4+6*4.3)-3000", eSYA}
+            "1.23+4.567/3-(3.4+6*4.3)-3000", eSYA,
+            "A1-C2++A4", "A4-$32", "2^4", eSYAPow}
         });
     }
 
@@ -93,5 +107,24 @@ public class ParserUnitTest {
         System.out.println("Test PARSER shuntingYardAlgorithm");
         ArrayList<String> result = instance.infix2ReversePolish(equationSYA);
         assertEquals(expSYA, result);
+    }
+    
+    @Test(expected = InvalidSyntaxException.class)
+    public void testInfix2ReversePolishThrowInvalidSyntax1() throws Exception {
+        System.out.println("Test PARSER shuntingYardAlgorithm");
+        instance.infix2ReversePolish(this.equationSyntaxE1);
+    }
+    
+    @Test(expected = InvalidSyntaxException.class)
+    public void testInfix2ReversePolishThrowInvalidSyntax2() throws Exception {
+        System.out.println("Test PARSER shuntingYardAlgorithm");
+        instance.infix2ReversePolish(this.equationSyntaxE2);
+    }
+    
+    @Test
+    public void testInfix2ReversePolishPow() throws Exception {
+        System.out.println("Test PARSER shuntingYardAlgorithm");
+        ArrayList<String> result = instance.infix2ReversePolish(this.equationSYAPow);
+        assertEquals(this.expSYAPow, result);
     }
 }
