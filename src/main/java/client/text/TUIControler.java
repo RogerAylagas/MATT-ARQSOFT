@@ -13,10 +13,13 @@ import client.spreadsheet.InvalidFormulaException;
 import client.spreadsheet.InvalidOperationException;
 import client.spreadsheet.InvalidSpreadsheetNameException;
 import client.spreadsheet.InvalidSyntaxException;
+import client.spreadsheet.LoadingException;
 import client.spreadsheet.SavingException;
 import client.spreadsheet.SpreadsheetManager;
 
 import java.nio.file.InvalidPathException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -39,6 +42,8 @@ public class TUIControler extends Controler{
     
     @Override
     public void interpretNewCommand(String command){
+        String name;
+        String path;
         String[] split = command.split(" ");
         OUTER:
         switch (split[0]) {
@@ -67,9 +72,8 @@ public class TUIControler extends Controler{
                     client.displayErr(ex.toString());
                 }
                 break;
+            
             case "cr":
-                String name;
-                String path;
                 try{
                     name = split[1];
                 }catch(Exception e){
@@ -94,6 +98,7 @@ public class TUIControler extends Controler{
                     client.displayErr(ex.toString());
                 }
                 break;
+            
             case "s":
                 if(!this.spreadsheetManager.isSpreadsheetOpen()){
                     String errMsg = "ERROR: There is no spreadsheet opened";
@@ -106,9 +111,13 @@ public class TUIControler extends Controler{
                     client.displayErr(ex.toString());
                 }
                 break;
+            
+            
             case "q":
                 this.client.close();
                 break;
+            
+            
             case "v":
                 if(!this.spreadsheetManager.isSpreadsheetOpen()){
                     String errMsg = "ERROR: There is no spreadsheet opened";
@@ -139,6 +148,39 @@ public class TUIControler extends Controler{
                         break OUTER;
                 }
                 break;
+            
+            case "o":
+                try{
+                    name = split[1];
+                }catch(Exception e){
+                    String errMsg = "Error: ";
+                    this.client.displayErr(errMsg);
+                    break;
+                }
+                
+                try{
+                    path = split[2];
+                }catch(Exception e){
+                    path = DEFAULT_PATH;
+                }
+                
+                try {
+                    this.spreadsheetManager.loadSpreadsheet(name, path);
+                } catch (InvalidCellException ex) {
+                    ex.toString();
+                } catch (InvalidSyntaxException ex) {
+                    ex.toString();
+                } catch (InvalidCellValueException ex) {
+                    ex.toString();
+                } catch (InvalidFormulaException ex) {
+                    ex.toString();
+                } catch (InvalidOperationException ex) {
+                    ex.toString();
+                } catch (LoadingException ex) {
+                    ex.toString();
+                }
+        
+                
             default:
                 String errMsg = "";
                 this.client.displayErr(errMsg);

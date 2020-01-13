@@ -25,6 +25,16 @@ public class Grid {
         }
     }
     
+    public Grid(int numCells) {
+        this.numCells = numCells;
+        this.cells = new Cell[numCells][numCells];
+        for (int r = 0; r < numCells; ++r) {
+            for (int c = 0; c < numCells; ++c) {
+                this.cells[r][c] = new Cell();
+            }
+        }
+    }
+    
     public String getValue(int r, int c){
         return this.cells[r][c].getValue();
     }

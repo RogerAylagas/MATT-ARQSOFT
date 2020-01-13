@@ -26,6 +26,14 @@ public class Spreadsheet {
         this.grid = new Grid();
         this.calc = new Calc();
     }
+    
+    public Spreadsheet(String name, String folder, int numCells) {
+        this.name = name;
+        this.folder = folder;
+        this.dataManager = new DataManager();
+        this.grid = new Grid(numCells);
+        this.calc = new Calc();
+    }
 
     public Grid getGrid() {
         return grid;
@@ -45,8 +53,6 @@ public class Spreadsheet {
         this.calc = calc;
     }
     
-    
-
     public void edit(String row, String col, String input) throws InvalidCellException, InvalidSyntaxException, InvalidCellValueException, InvalidFormulaException, InvalidOperationException {
         try{
             int r = Integer.parseInt(row)-1;
@@ -57,10 +63,11 @@ public class Spreadsheet {
             if(this.isEquation(input)){
                 String result = this.calc.solveEq(input, this.grid);
                 this.grid.setValue(r, c, result);
-                this.calc.recomputeCells(r,c,this.grid);
+                this.grid = this.calc.recomputeCells(r,c,this.grid);
             }else{
                 if (Pattern.matches("[0-9]+", input)){
                     this.grid.setValue(r, c, input);
+                    this.grid = this.calc.recomputeCells(r,c,this.grid);
                 }else{
                     this.grid.setValueToNull(r, c);
                 }
@@ -129,7 +136,17 @@ public class Spreadsheet {
         }
         return visualization;
     }
-    
-    
+
+    int getNumCells() {
+        return this.grid.getNumCells();
+    }
+
+    void setContent(int r, int c, String content) {
+        this.grid.setContent(r, c, content);
+    }
+
+    void computeContent() throws InvalidSyntaxException, InvalidCellValueException, InvalidFormulaException, InvalidOperationException {
+        this.grid = this.calc.computeContent(this.grid);
+    }
     
 }

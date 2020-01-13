@@ -20,8 +20,11 @@ public class SpreadsheetManager {
     final static String MENU = ""
             + "**********   MENU   **********\n"
             + "m                  - Visualize menu\n"
-            + "cr 'name' 'folder' - Create new spreadsheet with name and saving folder.\n"
+            + "cr name folder     - Create new spreadsheet with name and saving folder.\n"
             + "                     Saving folder is optional\n"
+            + "o name path        - Open a spreadsheet. The filename must contain the"
+            + "                     extension '.txt' of the file."
+            + "                     path is optional"
             + "e r,c value        - Edit the cell with row 'r' and column 'c'\n"
             + "                     The value can be a string, a number or an equation.\n"
             + "                     Equations must start with the character '='\n"
@@ -37,6 +40,7 @@ public class SpreadsheetManager {
     public SpreadsheetManager() {
         this.spreadsheets = new HashMap<>();
         this.spreadsheetOpen = false;
+        this.sLoader = new SpreadsheetLoader();
     }
 
     public boolean isSpreadsheetOpen() {
@@ -77,5 +81,12 @@ public class SpreadsheetManager {
 
     public String visualizeSpreadsheetContent() {
         return this.currSpreadsheet.visualizeContent();
+    }
+    
+    public void loadSpreadsheet(String name, String path) throws InvalidCellException, InvalidSyntaxException, InvalidCellValueException, InvalidFormulaException, InvalidOperationException, LoadingException{
+        Spreadsheet s = this.sLoader.loadSpreadsheet(name, path);
+        this.currSpreadsheet = s;
+        this.spreadsheets.put(name, s);
+        spreadsheetOpen = true;
     }
 }

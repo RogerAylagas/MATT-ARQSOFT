@@ -13,6 +13,7 @@ import java.text.StringCharacterIterator;
 import java.util.ArrayList;
 import java.util.ListIterator;
 import client.functions.Function;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -48,7 +49,7 @@ public class Calc {
         return result;
     }
 
-    public void recomputeCells(int r, int c, Grid grid) throws InvalidSyntaxException, InvalidCellValueException, InvalidFormulaException, InvalidOperationException {
+    public Grid recomputeCells(int r, int c, Grid grid) throws InvalidSyntaxException, InvalidCellValueException, InvalidFormulaException, InvalidOperationException {
         int nCells = grid.getNumCells();
         int[][] checkGrid = new int[nCells][nCells];
         int checkedCells = 1;
@@ -64,6 +65,11 @@ public class Calc {
                         cue = grid.getContent(i, j);
                         linkedInCue = this.parser.identifyLinkedCells(cue);
                         if(linkedInCue.isEmpty()){
+                            if (Pattern.matches("[0-9]+", cue)){
+                                grid.setValue(i, j, cue);
+                            }else{
+                                grid.setValueToNull(i, j);
+                            }
                             cellName = convertRowCol2Cell(i,j);
                             recomputedCells.add(cellName);
                             checkGrid[i][j]=1;
@@ -81,6 +87,7 @@ public class Calc {
                 }
             }
         }
+        return grid;
     }
 
     private String replaceLinkedByValue(String equation, Grid grid, ArrayList<String> linkedCells) throws InvalidCellValueException {
@@ -242,6 +249,49 @@ public class Calc {
         cell = cell.concat(Integer.toString(i+1));
         return cell;
     }
+
+    protected Grid computeContent(Grid grid) throws InvalidSyntaxException, InvalidCellValueException, InvalidFormulaException, InvalidOperationException {
+        int nCells = grid.getNumCells();
+        int[][] checkGrid = new int[nCells][nCells];
+        int checkedCells = 0;
+        String cue; // Content Under Evaluation
+        ArrayList<String> linkedInCue;
+        ArrayList<String> recomputedCells = new ArrayList<>();
+
+        String cellName, result;
+        while(checkedCells<nCells*nCells){
+            for (int i = 0; i < nCells; i++) {
+                for (int j = 0; j < nCells; j++) {
+                    if(checkGrid[i][j]==0){
+                        cue = grid.getContent(i, j);
+                        linkedInCue = this.parser.identifyLinkedCells(cue);
+                        if(linkedInCue.isEmpty()){
+                            if (Pattern.matches("[0-9]+", cue)){
+                                grid.setValue(i, j, cue);
+                            }else{
+                                grid.setValueToNull(i, j);
+                            }
+                            cellName = convertRowCol2Cell(i,j);
+                            recomputedCells.add(cellName);
+                            checkGrid[i][j]=1;
+                            checkedCells+=1;
+                        }
+                        else if(recomputedCells.containsAll(linkedInCue)){
+                            result = this.solveEq(cue, grid);
+                            grid.setValue(i, j, result);
+                            cellName = convertRowCol2Cell(i,j);
+                            recomputedCells.add(cellName);
+                            checkGrid[i][j]=1;
+                            checkedCells+=1;
+                        }
+                    }
+                }
+            }
+        }
+        return grid;
+    }
+    
+            
 
 
 
