@@ -11,7 +11,21 @@ package client.spreadsheet;
  */
 public class InvalidCellValueException extends Exception {
 
+    /**
+     * Creates a new instance of <code>InvalidCellValueException</code> without
+     * detail message.
+     */
     public InvalidCellValueException() {
+    }
+
+    /**
+     * Constructs an instance of <code>InvalidCellValueException</code> with
+     * the specified detail message.
+     *
+     * @param msg the detail message.
+     */
+    public InvalidCellValueException(String msg) {
+        super(msg);
     }
     
 }

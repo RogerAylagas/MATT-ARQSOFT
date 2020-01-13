@@ -11,8 +11,21 @@ package client.spreadsheet;
  */
 public class InvalidCellException extends Exception{
 
-    public InvalidCellException(String e_Specified_Row_or_Column_are_not_correct) {
-        
+    /**
+     * Creates a new instance of <code>InvalidCellException</code> without
+     * detail message.
+     */
+    public InvalidCellException() {
+    }
+
+    /**
+     * Constructs an instance of <code>InvalidCellException</code> with
+     * the specified detail message.
+     *
+     * @param msg the detail message.
+     */
+    public InvalidCellException(String msg) {
+        super(msg);
     }
     
 }

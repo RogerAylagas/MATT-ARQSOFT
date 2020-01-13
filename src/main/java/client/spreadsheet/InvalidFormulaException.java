@@ -11,7 +11,20 @@ package client.spreadsheet;
  */
 public class InvalidFormulaException extends Exception {
 
+    /**
+     * Creates a new instance of <code>InvalidFormulaException</code> without
+     * detail message.
+     */
     public InvalidFormulaException() {
     }
-    
+
+    /**
+     * Constructs an instance of <code>InvalidFormulaException</code> with
+     * the specified detail message.
+     *
+     * @param msg the detail message.
+     */
+    public InvalidFormulaException(String msg) {
+        super(msg);
+    }
 }

@@ -11,7 +11,20 @@ package client.spreadsheet;
  */
 public class SavingException extends Exception{
 
+    /**
+     * Creates a new instance of <code>SavingException</code> without
+     * detail message.
+     */
     public SavingException() {
     }
-    
+
+    /**
+     * Constructs an instance of <code>SavingException</code> with
+     * the specified detail message.
+     *
+     * @param msg the detail message.
+     */
+    public SavingException(String msg) {
+        super(msg);
+    }
 }

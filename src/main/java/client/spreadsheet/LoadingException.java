@@ -11,7 +11,20 @@ package client.spreadsheet;
  */
 public class LoadingException extends Exception {
 
+    /**
+     * Creates a new instance of <code>LoadingException</code> without
+     * detail message.
+     */
     public LoadingException() {
     }
-    
+
+    /**
+     * Constructs an instance of <code>LoadingException</code> with
+     * the specified detail message.
+     *
+     * @param msg the detail message.
+     */
+    public LoadingException(String msg) {
+        super(msg);
+    }
 }

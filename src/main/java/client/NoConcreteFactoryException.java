@@ -11,4 +11,20 @@ package client;
  */
 class NoConcreteFactoryException extends Exception{
     
+    /**
+     * Creates a new instance of <code>NoConcreteFactoryException</code> without
+     * detail message.
+     */
+    public NoConcreteFactoryException() {
+    }
+
+    /**
+     * Constructs an instance of <code>NoConcreteFactoryException</code> with
+     * the specified detail message.
+     *
+     * @param msg the detail message.
+     */
+    public NoConcreteFactoryException(String msg) {
+        super(msg);
+    }
 }

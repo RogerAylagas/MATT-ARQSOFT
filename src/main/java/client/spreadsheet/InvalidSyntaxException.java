@@ -11,7 +11,20 @@ package client.spreadsheet;
  */
 public class InvalidSyntaxException extends Exception {
 
+    /**
+     * Creates a new instance of <code>InvalidSyntaxException</code> without
+     * detail message.
+     */
     public InvalidSyntaxException() {
     }
-    
+
+    /**
+     * Constructs an instance of <code>InvalidSyntaxException</code> with
+     * the specified detail message.
+     *
+     * @param msg the detail message.
+     */
+    public InvalidSyntaxException(String msg) {
+        super(msg);
+    }
 }
