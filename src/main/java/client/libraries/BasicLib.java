@@ -5,14 +5,14 @@
  */
 package client.libraries;
 
-import client.operations.Max;
-import client.operations.Sum;
-import client.operations.Average;
-import client.operations.Min;
-import client.operations.Operation;
+import client.functions.Max;
+import client.functions.Sum;
+import client.functions.Average;
+import client.functions.Min;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import client.functions.Function;
 
 
 /**
@@ -20,18 +20,18 @@ import java.util.Map;
  * @author roger
  */
 public class BasicLib extends Library{
-    HashMap<String,Operation> operations;
+    HashMap<String,Function> functions;
     
     public BasicLib() {
-        this.operations = new HashMap<String, Operation>();
-        operations.put("SUM", new Sum());
-        operations.put("MIN", new Min());
-        operations.put("MAX", new Max());
-        operations.put("AVERAGE", new Average());
+        this.functions = new HashMap<>();
+        functions.put("SUM", new Sum());
+        functions.put("MIN", new Min());
+        functions.put("MAX", new Max());
+        functions.put("AVERAGE", new Average());
     } 
 
-    public Operation getOperation(String operation) {
-        return this.operations.get(operation);
+    public Function getFunction(String operation) {
+        return this.functions.get(operation);
     }
 
 }

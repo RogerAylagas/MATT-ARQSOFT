@@ -5,9 +5,10 @@
  */
 package client.operationsUnit;
 
-import client.operations.Average;
-import client.operations.Average;
+import client.functions.Average;
+import java.math.BigDecimal;
 import java.util.Arrays;
+import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -20,14 +21,14 @@ import org.junit.runners.Parameterized;
  */
 @RunWith(value = Parameterized.class)
 public class AverageUnitTest {
-    private final float a;
-    private final float b;
-    private final float expected;
-    private final float[] values;
-    private final float expected_;
+    private final BigDecimal a;
+    private final BigDecimal b;
+    private final BigDecimal expected;
+    private final BigDecimal[] values;
+    private final BigDecimal expected_;
     Average instance;
     
-    public AverageUnitTest(float a, float b, float expected, float[] values, float expected_) {
+    public AverageUnitTest(BigDecimal a, BigDecimal b, BigDecimal expected, BigDecimal[] values, BigDecimal expected_) {
         this.a = a;
         this.b = b;
         this.expected = expected;
@@ -43,9 +44,9 @@ public class AverageUnitTest {
     @Parameterized.Parameters
     public static Iterable<Object[]> getData(){
         return Arrays.asList(new Object[][]{
-            {3.0f,5f,4f, new float[]{2.3f,5.4f,6.3f,2.1f}, 4.025f},
-            {6.4f, 2.4f,4.4f, new float[]{35f,5.4f,6.3f,2.1f}, 12.2f},
-            {-0.4f,0.4f,0f, new float[]{-2.3f,-5.4f,-6.3f,2.1f}, -2.975f}
+            {new BigDecimal(3.0),new BigDecimal(5),new BigDecimal(4), new BigDecimal[]{new BigDecimal(2.3),new BigDecimal(5.4),new BigDecimal(6.3),new BigDecimal(2.1)}, new BigDecimal(4.025)},
+            {new BigDecimal(6.4),new BigDecimal(2.4),new BigDecimal(4.4), new BigDecimal[]{new BigDecimal(35),new BigDecimal(5.4),new BigDecimal(6.3),new BigDecimal(2.1)}, new BigDecimal(12.2)},
+            {new BigDecimal(-0.4),new BigDecimal(0.4),new BigDecimal(0), new BigDecimal[]{new BigDecimal(-2.3),new BigDecimal(-5.4),new BigDecimal(-6.3),new BigDecimal(2.1)}, new BigDecimal(-2.975)}
         });
     }
 
@@ -53,20 +54,22 @@ public class AverageUnitTest {
      * Test of compute method, of class Average.
      */
     @Test
-    public void testCompute_float_float() {
-        System.out.println("Test AVERAGE float_float");
-        float result = instance.compute(a, b);
-        assertEquals(expected, result, 0.001);
+    public void testCompute_BigDecimal_BigDecimal() {
+        System.out.println("Test AVERAGE BigDecimal_BigDecimal");
+        BigDecimal result = instance.compute(a, b);
+        assertEquals(expected.setScale(4,BigDecimal.ROUND_HALF_DOWN),
+                result.setScale(4,BigDecimal.ROUND_HALF_DOWN));
     }
 
     /**
      * Test of compute method, of class Average.
      */
     @Test
-    public void testCompute_floatArr() {
+    public void testCompute_BigDecimalArr() {
         System.out.println("Test AVERAGE array");
-        float result = instance.compute(values);
-        assertEquals(expected_, result, 0.001);
+        BigDecimal result = instance.compute(values);
+        assertEquals(expected_.setScale(4,BigDecimal.ROUND_HALF_DOWN),
+                result.setScale(4,BigDecimal.ROUND_HALF_DOWN));
     }
     
 }

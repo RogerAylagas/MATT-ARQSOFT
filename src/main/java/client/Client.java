@@ -5,32 +5,74 @@
  */
 package client;
 
+
+import java.util.Scanner;
+
 /**
  *
  * @author roger
  */
-public class Client {
-    private ProtocolManager protocolManager;
-    private TextUI textUI;
+public abstract class Client {
     
-    public void displaySpreadsheetMenu(){
-        String menu = this.protocolManager.displaySpreadsheetMenu();
-        this.textUI.displayInfo(menu);
+    protected UIFactory factory;
+    protected UIRenderer redner;
+    
+    protected Controler controler;
+    protected Scanner scanner;
+    
+    public abstract void close();
+    
+    public abstract void displayErr(String errMsg);
+    
+    public abstract void displayContent(String errMsg);
+    
+    public abstract void interactWithUser();
+
+    public Client() {
     }
     
-    public String requestMenuOption(){
-        return this.textUI.requestMenuOption();
-    }
-    
-    public void interpretNewCommand(String command) {
-       this.protocolManager.interpretNewCommand(command);
+    public UIFactory getFactory() {
+        return factory;
     }
 
-    void sendError(String toString) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void setFactory(UIFactory factory) {
+        this.factory = factory;
+    }
+    
+    protected void prepareFramework(){
+        
+    }
+
+    private void openProgram() {
+        this.prepareFramework();
+        this.interactWithUser();
     }
     
     public static void main(String[] args){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Text ('text') or Graphic ('graphic') user interface? - Graphic not available for the moment-");
+        String tClient = scanner.nextLine();
+        if (!tClient.equalsIgnoreCase("text")) {
+            System.out.println("Graphic user interface not available....leaving session");
+            System.exit(-1);
+        }
+        UIFactory factory = null;
+        try {
+            factory = UIFactory.getInstance(tClient);
+        } catch (NoConcreteFactoryException ex) {
+            System.out.println("Error while trying to get the concrete factory. "
+                    + "Details: " + ex.getMessage());
+            System.out.println("Leaving the session...");
+            System.exit(-1);
+        }
+        
+        Client client = factory.createUIClient();
+        client.setFactory(factory);
+        client.scanner = scanner;
+        client.controler = factory.createControler(client);
+        client.openProgram();
         
     }
 }
+
+

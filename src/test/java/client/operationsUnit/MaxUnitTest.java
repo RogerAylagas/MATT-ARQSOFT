@@ -5,8 +5,9 @@
  */
 package client.operationsUnit;
 
-import client.operations.Max;
-import client.operations.Max;
+import client.functions.Max;
+import client.functions.Max;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,14 +22,14 @@ import org.junit.runners.Parameterized.Parameters;
  */
 @RunWith(value = Parameterized.class)
 public class MaxUnitTest {
-    private final float a;
-    private final float b;
-    private final float expected;
-    private final float[] values;
-    private final float expected_;
+    private final BigDecimal a;
+    private final BigDecimal b;
+    private final BigDecimal expected;
+    private final BigDecimal[] values;
+    private final BigDecimal expected_;
     Max instance;
     
-    public MaxUnitTest(float a, float b, float expected, float[] values, float expected_) {
+    public MaxUnitTest(BigDecimal a, BigDecimal b, BigDecimal expected, BigDecimal[] values, BigDecimal expected_) {
         this.a = a;
         this.b = b;
         this.expected = expected;
@@ -44,9 +45,9 @@ public class MaxUnitTest {
     @Parameters
     public static Iterable<Object[]> getData(){
         return Arrays.asList(new Object[][]{
-            {3.0f,5f,5f, new float[]{2.3f,5.4f,6.3f,2.1f}, 6.3f},
-            {6.4f, 2.4f,6.4f, new float[]{35f,5.4f,6.3f,2.1f}, 35f},
-            {-0.4f,0.4f,0.4f, new float[]{-2.3f,-5.4f,-6.3f,2.1f}, 2.1f}
+            {new BigDecimal(3.0),new BigDecimal(5),new BigDecimal(5), new BigDecimal[]{new BigDecimal(2.3),new BigDecimal(5.4),new BigDecimal(6.3),new BigDecimal(2.1)}, new BigDecimal(6.3)},
+            {new BigDecimal(6.4),new BigDecimal(2.4),new BigDecimal(6.4), new BigDecimal[]{new BigDecimal(35),new BigDecimal(5.4),new BigDecimal(6.3),new BigDecimal(2.1)}, new BigDecimal(35)},
+            {new BigDecimal(-0.4),new BigDecimal(0.4),new BigDecimal(0.4), new BigDecimal[]{new BigDecimal(-2.3),new BigDecimal(-5.4),new BigDecimal(-6.3),new BigDecimal(2.1)}, new BigDecimal(2.1)}
         });
     }
 
@@ -54,10 +55,10 @@ public class MaxUnitTest {
      * Test of compute method, of class Max.
      */
     @Test
-    public void testCompute_float_float() {
-        System.out.println("Test MAX float_float");
-        float result = instance.compute(a, b);
-        assertEquals(expected, result, 0.001);
+    public void testCompute_BigDecimal_BigDecimal() {
+        System.out.println("Test MAX BigDecimal_BigDecimal");
+        BigDecimal result = instance.compute(a, b);
+        assertEquals(expected, result);
     }
 
     /**
@@ -65,10 +66,10 @@ public class MaxUnitTest {
      */
     
     @Test
-    public void testCompute_floatArr() {
+    public void testCompute_BigDecimalArr() {
         System.out.println("Test MAX array");
-        float result = instance.compute(this.values);
-        assertEquals(this.expected_, result, 0.001);
+        BigDecimal result = instance.compute(this.values);
+        assertEquals(this.expected_, result);
     }
     
 }

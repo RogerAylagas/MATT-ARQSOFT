@@ -5,8 +5,9 @@
  */
 package client.operationsUnit;
 
-import client.operations.Sum;
-import client.operations.Sum;
+import client.functions.Sum;
+import client.functions.Sum;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,14 +21,14 @@ import org.junit.runners.Parameterized;
  */
 @RunWith(value = Parameterized.class)
 public class SumUnitTest {
-    private final float a;
-    private final float b;
-    private final float expected;
-    private final float[] values;
-    private final float expected_;
+    private final BigDecimal a;
+    private final BigDecimal b;
+    private final BigDecimal expected;
+    private final BigDecimal[] values;
+    private final BigDecimal expected_;
     Sum instance;
     
-    public SumUnitTest(float a, float b, float expected, float[] values, float expected_) {
+    public SumUnitTest(BigDecimal a, BigDecimal b, BigDecimal expected, BigDecimal[] values, BigDecimal expected_) {
         this.a = a;
         this.b = b;
         this.expected = expected;
@@ -44,9 +45,9 @@ public class SumUnitTest {
     @Parameterized.Parameters
     public static Iterable<Object[]> getData(){
         return Arrays.asList(new Object[][]{
-            {3.0f,5f,8f, new float[]{2.3f,5.4f,6.3f,2.1f}, 16.1f},
-            {6.4f, 2.4f, 8.8f, new float[]{35f,5.4f,6.3f,2.1f}, 48.8f},
-            {-0.4f,0.4f, 0f, new float[]{-2.3f,-5.4f,-6.3f,2.1f}, -11.9f}
+            {new BigDecimal(3.0),new BigDecimal(5),new BigDecimal(8), new BigDecimal[]{new BigDecimal(2.3),new BigDecimal(5.4),new BigDecimal(6.3),new BigDecimal(2.1)}, new BigDecimal(16.1)},
+            {new BigDecimal(6.4),new BigDecimal(2.4),new BigDecimal(8.8), new BigDecimal[]{new BigDecimal(35),new BigDecimal(5.4),new BigDecimal(6.3),new BigDecimal(2.1)}, new BigDecimal(48.8)},
+            {new BigDecimal(-0.4),new BigDecimal(0.4),new BigDecimal(0), new BigDecimal[]{new BigDecimal(-2.3),new BigDecimal(-5.4),new BigDecimal(-6.3),new BigDecimal(2.1)}, new BigDecimal(-11.9)}
         });
     }
 
@@ -54,20 +55,22 @@ public class SumUnitTest {
      * Test of compute method, of class Sum.
      */
     @Test
-    public void testCompute_float_float() {
-        System.out.println("Test SUM float_float");
-        float result = instance.compute(a, b);
-        assertEquals(expected, result, 0.001);
+    public void testCompute_BigDecimal_BigDecimal() {
+        System.out.println("Test SUM BigDecimal_BigDecimal");
+        BigDecimal result = instance.compute(a, b);
+        assertEquals(expected.setScale(4,BigDecimal.ROUND_HALF_DOWN),
+                result.setScale(4,BigDecimal.ROUND_HALF_DOWN));
     }
 
     /**
      * Test of compute method, of class Sum.
      */
     @Test
-    public void testCompute_floatArr() {
+    public void testCompute_BigDecimalArr() {
         System.out.println("Test SUM array");
-        float result = instance.compute(values);
-        assertEquals(expected_, result, 0.001);
+        BigDecimal result = instance.compute(values);
+        assertEquals(expected_.setScale(4,BigDecimal.ROUND_HALF_DOWN),
+                result.setScale(4,BigDecimal.ROUND_HALF_DOWN));
     }
     
 }
