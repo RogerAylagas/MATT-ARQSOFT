@@ -100,7 +100,7 @@ public class Calc {
             try{
                 equation = equation.replace(linkedCell, grid.getValue(coordinates[0], coordinates[1]));
             }catch(Exception e){
-                throw new InvalidCellValueException();
+                throw new InvalidCellValueException("Error: Invalid cell value in "+linkedCell+" for computing the equation");
             }
         }
         return equation;
@@ -149,10 +149,10 @@ public class Calc {
                         eq = eq.replace(formula, res.toString());
                         break;
                     default:
-                        throw new InvalidFormulaException();
+                        throw new InvalidFormulaException("Error: Too few or too many arguments in function " + formula);
                 }
             }
-            else throw new InvalidFormulaException();
+            else throw new InvalidFormulaException("Error: Unsupported function " + op);
         }
         return eq;
     }
@@ -227,7 +227,7 @@ public class Calc {
             case "^":
                 res = opL.pow(opR.intValue());
             default:
-                throw new InvalidOperationException();
+                throw new InvalidOperationException("Error: Invalid operand " + op);
                 
         }
         return res;

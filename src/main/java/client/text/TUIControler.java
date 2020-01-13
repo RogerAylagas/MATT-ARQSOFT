@@ -18,8 +18,7 @@ import client.spreadsheet.SavingException;
 import client.spreadsheet.SpreadsheetManager;
 
 import java.nio.file.InvalidPathException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 /**
  *
@@ -61,15 +60,15 @@ public class TUIControler extends Controler{
                 try{
                     this.spreadsheetManager.edit(parsedCommand[0], parsedCommand[1], split[2]);
                 }catch(InvalidCellException ex){
-                    client.displayErr(ex.toString()); 
+                    client.displayErr(ex.getMessage()); 
                 }catch(InvalidSyntaxException ex){
-                    client.displayErr(ex.toString());
+                    client.displayErr(ex.getMessage());
                 }catch(InvalidCellValueException ex){
-                    client.displayErr(ex.toString());
+                    client.displayErr(ex.getMessage());
                 }catch(InvalidFormulaException ex){
-                    client.displayErr(ex.toString());
+                    client.displayErr(ex.getMessage());
                 }catch(InvalidOperationException ex){
-                    client.displayErr(ex.toString());
+                    client.displayErr(ex.getMessage());
                 }
                 break;
             
@@ -91,11 +90,11 @@ public class TUIControler extends Controler{
                 try{
                     this.spreadsheetManager.createSpreadsheet(name,path);
                 } catch (InvalidSpreadsheetNameException ex) {
-                    client.displayErr(ex.toString());
+                    client.displayErr(ex.getMessage());
                 } catch (InvalidPathException ex) {
-                    client.displayErr(ex.toString());
+                    client.displayErr(ex.getMessage());
                 } catch (NullPointerException ex) {
-                    client.displayErr(ex.toString());
+                    client.displayErr(ex.getMessage());
                 }
                 break;
             
@@ -108,7 +107,7 @@ public class TUIControler extends Controler{
                 try {
                     this.spreadsheetManager.save();
                 } catch (SavingException ex) {
-                    client.displayErr(ex.toString());
+                    client.displayErr(ex.getMessage());
                 }
                 break;
             
@@ -125,8 +124,8 @@ public class TUIControler extends Controler{
                     break;
                 }
                 if(split.length<2){
-                    this.client.displayErr("ERROR: Wrong command");
-                    this.client.displayContent("To visualize values use: v v\nTo visualize content use: v c\n");
+                    this.client.displayErr("ERROR: Wrong arguments for visualization");
+                    this.client.displayContent("To visualize values use: v v\nTo visualize content use: v c");
                     break;
                 }
                 switch (split[1]) {
@@ -143,8 +142,8 @@ public class TUIControler extends Controler{
                             break;
                         }
                     default:
-                        this.client.displayErr("ERROR: Wrong command");
-                        this.client.displayContent("To visualize values use: v v\nTo visualize content use: v c\n");
+                        this.client.displayErr("ERROR: Wrong arguments for visualization");
+                        this.client.displayContent("To visualize values use: v v\nTo visualize content use: v c");
                         break OUTER;
                 }
                 break;
@@ -153,7 +152,7 @@ public class TUIControler extends Controler{
                 try{
                     name = split[1];
                 }catch(Exception e){
-                    String errMsg = "Error: ";
+                    String errMsg = "Error: No filename provided";
                     this.client.displayErr(errMsg);
                     break;
                 }
@@ -167,23 +166,24 @@ public class TUIControler extends Controler{
                 try {
                     this.spreadsheetManager.loadSpreadsheet(name, path);
                 } catch (InvalidCellException ex) {
-                    ex.toString();
+                    client.displayErr(ex.getMessage());
                 } catch (InvalidSyntaxException ex) {
-                    ex.toString();
+                    client.displayErr(ex.getMessage());
                 } catch (InvalidCellValueException ex) {
-                    ex.toString();
+                    client.displayErr(ex.getMessage());
                 } catch (InvalidFormulaException ex) {
-                    ex.toString();
+                    client.displayErr(ex.getMessage());
                 } catch (InvalidOperationException ex) {
-                    ex.toString();
+                    client.displayErr(ex.getMessage());
                 } catch (LoadingException ex) {
-                    ex.toString();
+                    client.displayErr(ex.getMessage());
                 }
         
                 
             default:
-                String errMsg = "";
+                String errMsg = "Error: Unsupported command";
                 this.client.displayErr(errMsg);
+                this.client.displayContent("Use 'm' to visualize the menu");
                 break;
         }
     }

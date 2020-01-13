@@ -51,7 +51,7 @@ public class SpreadsheetLoader {
             return spreadsheet;
             
         }catch(IOException e){  
-            throw new LoadingException();  
+            throw new LoadingException("Error: Unable to load the file");  
         }  
     }
     

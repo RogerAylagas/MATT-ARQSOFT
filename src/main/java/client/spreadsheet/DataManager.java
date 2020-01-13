@@ -38,7 +38,7 @@ public class DataManager {
             }
             writer.close();
         }catch (IOException e){
-            throw new SavingException();
+            throw new SavingException("Error: Unable to save the spreadsheet");
         }
     }
 }

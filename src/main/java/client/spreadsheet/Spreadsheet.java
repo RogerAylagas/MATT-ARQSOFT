@@ -58,7 +58,7 @@ public class Spreadsheet {
             int r = Integer.parseInt(row)-1;
             int c = Integer.parseInt(col)-1;
             if(!this.isValidCell(r, c)){
-                throw new InvalidCellException("E Specified Row or Column are not correct");
+                throw new InvalidCellException("Error: Invalid row or column");
             }  
             if(this.isEquation(input)){
                 String result = this.calc.solveEq(input, this.grid);
@@ -75,7 +75,7 @@ public class Spreadsheet {
             }
             this.grid.setContent(r, c, input);
         }catch(NumberFormatException e){
-            throw new InvalidCellException("E Specified Row or Column are not correct");
+            throw new InvalidCellException("Error: Invalid row or column");
         } 
     }
     
@@ -86,7 +86,7 @@ public class Spreadsheet {
             }
             return true;
         }else{
-            throw new InvalidCellException("E Specified Row or Column are not correct");
+            throw new InvalidCellException("Error: Invalid row or column");
         } 
     }
 

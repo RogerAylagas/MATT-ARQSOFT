@@ -88,7 +88,8 @@ public class Parser {
         while (it.current() != CharacterIterator.DONE) {
                 token = Character.toString(it.current());
                 if(this.isOperator(prevToken)&& !prevToken.equals(")")&& this.isOperator(token)) 
-                    throw new InvalidSyntaxException();
+                    throw new InvalidSyntaxException("Error: Syntax error while concatenating two operators ("+
+                            prevToken + token + ")");
                 if(isForStack(token)){
                     if(stack.isEmpty()){
                         stack.add(token);
@@ -100,7 +101,7 @@ public class Parser {
                         it.next();
                         prevToken = token;
                     }else if(token.equals(")")){
-                        if(isParenthesis == false) throw new InvalidSyntaxException();
+                        if(isParenthesis == false) throw new InvalidSyntaxException("Error: Closing parenthesis before open clause");
                         ListIterator<String> lit = stack.listIterator(stack.size());
                         while(lit.hasPrevious() && !stack.get(lit.previousIndex()).equals("(")){
                             idx = lit.previousIndex();
@@ -137,10 +138,10 @@ public class Parser {
                     queue.add(digit);
                     digit = "";
                 }else{
-                    throw new InvalidSyntaxException();
+                    throw new InvalidSyntaxException("Error: Unsupported character " + token);
                 }
         }
-        if(isParenthesis==true) throw new InvalidSyntaxException();
+        if(isParenthesis==true) throw new InvalidSyntaxException("Error: Missing closing parenthesis");
         ListIterator<String> lit = stack.listIterator(stack.size());
         String prev;
         while(lit.hasPrevious()){
@@ -185,7 +186,7 @@ public class Parser {
             idx = lit.nextIndex();
             if(lit.next().contains(operand)) return idx;
         }
-        throw new InvalidOperationException();
+        throw new InvalidOperationException("Error: Unsupported operation " + operand);
     }
     
     

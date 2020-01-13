@@ -58,7 +58,7 @@ public class SpreadsheetManager {
     public void createSpreadsheet(String name, String path) throws InvalidSpreadsheetNameException, InvalidPathException, NullPointerException {
         // TODO: Check errors
         if (!Pattern.matches("[a-zA-Z0-9]+", name)) {
-            throw new InvalidSpreadsheetNameException();
+            throw new InvalidSpreadsheetNameException("Error: Invaid file name");
         }
         Paths.get(path);
         Spreadsheet newSpreadsheet = new Spreadsheet(name, path);

@@ -21,7 +21,7 @@ public interface UIFactory {
         }else if(factoryType.equalsIgnoreCase("graphics")){
             return new GUIFactory() ;
         }
-        throw new NoConcreteFactoryException() ;
+        throw new NoConcreteFactoryException("Error: Not supported UI type") ;
         
     }
     
