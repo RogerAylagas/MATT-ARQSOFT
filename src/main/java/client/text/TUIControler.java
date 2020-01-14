@@ -55,9 +55,8 @@ public class TUIControler extends Controler{
                     this.client.displayErr(errMsg);
                     break;
                 }
-                    
-                String[] parsedCommand = split[1].split(",");
-                try{
+                try{    
+                    String[] parsedCommand = split[1].split(",");
                     this.spreadsheetManager.edit(parsedCommand[0], parsedCommand[1], split[2]);
                 }catch(InvalidCellException ex){
                     client.displayErr(ex.getMessage()); 
@@ -69,6 +68,8 @@ public class TUIControler extends Controler{
                     client.displayErr(ex.getMessage());
                 }catch(InvalidOperationException ex){
                     client.displayErr(ex.getMessage());
+                }catch(ArrayIndexOutOfBoundsException ex){
+                    client.displayErr("Error: Cell column and input have to be specified");
                 }
                 break;
             
@@ -178,7 +179,7 @@ public class TUIControler extends Controler{
                 } catch (LoadingException ex) {
                     client.displayErr(ex.getMessage());
                 }
-        
+                break;
                 
             default:
                 String errMsg = "Error: Unsupported command";
