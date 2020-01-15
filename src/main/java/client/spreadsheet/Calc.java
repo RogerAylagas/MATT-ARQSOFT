@@ -106,7 +106,7 @@ public class Calc {
         return equation;
     }
 
-    private String computeFromulas(String equation,Grid grid, ArrayList<String> formulas) throws InvalidFormulaException {
+    private String computeFromulas(String equation,Grid grid, ArrayList<String> formulas) throws InvalidFormulaException, InvalidCellValueException {
         ListIterator<String> it = formulas.listIterator();
         String eq = equation;
         String formula;
@@ -124,9 +124,14 @@ public class Calc {
                         int nRows = coords[3]-coords[1]+1;
                         int nCols = coords[2]-coords[0]+1;
                         BigDecimal[] values = new BigDecimal[nRows*nCols];
-                        for (int i = coords[1]; i <= coords[3]; i++) {
-                            for (int j = coords[0]; j <= coords[2]; j++) {
+                        for (int i = coords[0]; i <= coords[2]; i++) {
+                            for (int j = coords[1]; j <= coords[3]; j++) {
+                                try{
                                 values[(i-coords[1])*nRows+j-coords[0]] = new BigDecimal(grid.getValue(i, j));
+                                }catch(Exception ex){
+                                    throw new InvalidCellValueException("Error: Invalid cell value in cell "+ this.convertRowCol2Cell(i, j));
+                                }
+                                
                             }
                         }   res = op.compute(values);
                         eq = eq.replace(formula, res.toString());
@@ -236,7 +241,7 @@ public class Calc {
     private String convertRowCol2Cell(int i, int j) {
         String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         String cell = "";
-        String toAdd = "";
+        String toAdd;
         int ent = j;
         int rest;
         while((ent/26)>=1||(ent%26>=0)){

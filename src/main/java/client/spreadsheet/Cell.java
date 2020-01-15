@@ -15,8 +15,8 @@ public class Cell {
     private String value;
 
     public Cell() {
-        this.content = "";
-        this.value = "";
+        this.content = " ";
+        this.value = " ";
     }
 
     public void setValueToNull() {
