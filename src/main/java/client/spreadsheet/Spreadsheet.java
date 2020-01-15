@@ -6,6 +6,7 @@
 package client.spreadsheet;
 
 import static java.lang.Integer.max;
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 /**
@@ -145,8 +146,68 @@ public class Spreadsheet {
         this.grid.setContent(r, c, content);
     }
 
-    void computeContent() throws InvalidSyntaxException, InvalidCellValueException, InvalidFormulaException, InvalidOperationException {
-        this.grid = this.calc.computeContent(this.grid);
+    void computeContent() throws InvalidSyntaxException, InvalidCellValueException, InvalidFormulaException, InvalidOperationException, InvalidCellException {
+      
+        int nCells = grid.getNumCells();
+        int[][] checkGrid = new int[nCells][nCells];
+        int checkedCells = 0;
+        String cue; // Content Under Evaluation
+        ArrayList<String> linkedInCue;
+        ArrayList<String> recomputedCells = new ArrayList<>();
+
+        String cellName;
+        while(checkedCells<nCells*nCells){
+            for (int i = 0; i < nCells; i++) {
+                for (int j = 0; j < nCells; j++) {
+                    if(checkGrid[i][j]==0){
+                        cue = grid.getContent(i, j);
+                        linkedInCue = this.calc.identifyLinkedCells(cue);
+                        if(linkedInCue.isEmpty()){
+                            this.computeValueOfCell(Integer.toString(i+1), Integer.toString(j+1),cue);
+                            cellName = convertRowCol2Cell(i,j);
+                            recomputedCells.add(cellName);
+                            checkGrid[i][j]=1;
+                            checkedCells+=1;
+                        }
+                        else if(recomputedCells.containsAll(linkedInCue)){
+                            this.computeValueOfCell(Integer.toString(i+1), Integer.toString(j+1),cue);
+                            cellName = convertRowCol2Cell(i,j);
+                            recomputedCells.add(cellName);
+                            checkGrid[i][j]=1;
+                            checkedCells+=1;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    private void computeValueOfCell(String row, String col, String input) throws InvalidSyntaxException, InvalidCellValueException, InvalidFormulaException, InvalidOperationException, InvalidCellException{
+        try{
+            int r = Integer.parseInt(row)-1;
+            int c = Integer.parseInt(col)-1;
+            if(!this.isValidCell(r, c)){
+                throw new InvalidCellException("Error: Invalid row or column");
+            }  
+            if(this.isEquation(input)){
+                String result = this.calc.solveEq(input, this.grid);
+                this.grid.setValue(r, c, result);
+            }else{
+                if (Pattern.matches("[0-9]+", input)){
+                    this.grid.setValue(r, c, input);
+                }else{
+                    this.grid.setValueToNull(r, c);
+                }
+                
+            }
+            this.grid.setContent(r, c, input);
+        }catch(NumberFormatException e){
+            throw new InvalidCellException("Error: Invalid row or column");
+        }
+    }
+    
+    private String convertRowCol2Cell(int i, int j){
+        return this.calc.convertRowCol2Cell(i, j);
     }
     
 }

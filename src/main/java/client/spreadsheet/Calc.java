@@ -238,7 +238,7 @@ public class Calc {
         return res;
     }
 
-    private String convertRowCol2Cell(int i, int j) {
+    protected String convertRowCol2Cell(int i, int j) {
         String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         String cell = "";
         String toAdd;
@@ -255,45 +255,8 @@ public class Calc {
         return cell;
     }
 
-    protected Grid computeContent(Grid grid) throws InvalidSyntaxException, InvalidCellValueException, InvalidFormulaException, InvalidOperationException {
-        int nCells = grid.getNumCells();
-        int[][] checkGrid = new int[nCells][nCells];
-        int checkedCells = 0;
-        String cue; // Content Under Evaluation
-        ArrayList<String> linkedInCue;
-        ArrayList<String> recomputedCells = new ArrayList<>();
-
-        String cellName, result;
-        while(checkedCells<nCells*nCells){
-            for (int i = 0; i < nCells; i++) {
-                for (int j = 0; j < nCells; j++) {
-                    if(checkGrid[i][j]==0){
-                        cue = grid.getContent(i, j);
-                        linkedInCue = this.parser.identifyLinkedCells(cue);
-                        if(linkedInCue.isEmpty()){
-                            if (Pattern.matches("[0-9]+", cue)){
-                                grid.setValue(i, j, cue);
-                            }else{
-                                grid.setValueToNull(i, j);
-                            }
-                            cellName = convertRowCol2Cell(i,j);
-                            recomputedCells.add(cellName);
-                            checkGrid[i][j]=1;
-                            checkedCells+=1;
-                        }
-                        else if(recomputedCells.containsAll(linkedInCue)){
-                            result = this.solveEq(cue, grid);
-                            grid.setValue(i, j, result);
-                            cellName = convertRowCol2Cell(i,j);
-                            recomputedCells.add(cellName);
-                            checkGrid[i][j]=1;
-                            checkedCells+=1;
-                        }
-                    }
-                }
-            }
-        }
-        return grid;
+    ArrayList<String> identifyLinkedCells(String cue) {
+        return this.parser.identifyLinkedCells(cue);
     }
     
             
